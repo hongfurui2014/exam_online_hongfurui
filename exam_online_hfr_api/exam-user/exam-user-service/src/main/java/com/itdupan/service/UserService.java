@@ -4,18 +4,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itdupan.bean.PageResult;
 import com.itdupan.bean.ResultBean;
-import com.itdupan.bean.ResultBean2;
 import com.itdupan.feign.GradeClient;
 import com.itdupan.mapper.UserMapper;
 import com.itdupan.pojo.Grade;
 import com.itdupan.pojo.User;
-import com.itdupan.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,12 +27,17 @@ public class UserService {
     @Autowired
     private GradeClient gradeClient;
 
+    @Autowired
+    private RoleService roleService;
+
     /**
      * 添加
      *
      * @param user
      */
     public void addUser(User user) {
+        user.setUserAddtime(new Date());
+        user.setUserSalt("guangyignbamiyang");
         userMapper.insertSelective(user);
     }
 
@@ -63,13 +67,9 @@ public class UserService {
      */
     public User findUserById(Long id) {
         User user = userMapper.selectByPrimaryKey(id);
-        //Grade grade = gradeClient.getGradeById(user.getFkUserGradeId());
-
-        ResultBean2<Grade> res = gradeClient.getGradeById(user.getFkUserGradeId());
-
-        System.out.println(res);
-        System.out.println(res.getData());
-        user.setGrade(res.getData());
+        ResultBean<Grade> res = gradeClient.getGradeById(user.getFkUserGradeId());
+        user.setFkGrade(res.getData());
+        user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
         return user;
     }
 
@@ -84,43 +84,76 @@ public class UserService {
 
     /**
      * 分页查询
-     *
      * @param page
      * @param rows
-     * @param userName
+     * @param userAccount
+     * @param userRealname
+     * @param fkUserGradeId
+     * @param fkUserRoleId
      * @return
      */
-    public PageResult<User> findUsersByPage(Integer page, Integer rows, String userName) {
+    public PageResult<User> findUsersByPage(Integer page, Integer rows, String userAccount, String userRealname, Integer fkUserGradeId, Integer fkUserRoleId) {
 
         PageHelper.startPage(page, rows);
 
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
 
-        if (StringUtils.isNotBlank(userName)) {
-            criteria.andLike("userName", "%" + userName + "%");
+        if (StringUtils.isNotBlank(userAccount)) {
+            criteria.andLike("userAccount", "%" + userAccount + "%");
+        }
+
+        if (StringUtils.isNotBlank(userRealname)) {
+            criteria.andLike("userRealname", "%" + userRealname + "%");
+        }
+
+        if(fkUserGradeId != null){
+            criteria.andEqualTo("fkUserGradeId", fkUserGradeId);
+        }
+
+        if(fkUserRoleId != null){
+            criteria.andEqualTo("fkUserRoleId", fkUserRoleId);
         }
 
         List<User> list = userMapper.selectByExample(example);
 
+        //为每个用户添加班级和角色
+        for(User u : list){
+            u.setFkGrade(gradeClient.getGradeById(u.getFkUserGradeId()).getData());
+            u.setFkRole(roleService.findRoleById(u.getFkUserRoleId()));
+        }
+
         PageInfo<User> pageInfo = new PageInfo<>(list);
-        System.out.println();
 
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getList());
     }
 
-
     /**
-     * 通过名称查询列表
+     * 通过登录账户查询列表
      *
-     * @param userName
+     * @param userAccount
      * @return
      */
-    public List<User> findUsersByUserName(String userName) {
+    public List<User> findUsersByUserAccount(String userAccount) {
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
 
-        criteria.andEqualTo("userName", userName);
+        criteria.andEqualTo("userAccount", userAccount);
+
+        return userMapper.selectByExample(example);
+    }
+
+    /**
+     * 通过真实姓名查询列表
+     *
+     * @param userRealname
+     * @return
+     */
+    public List<User> findUsersByRealname(String userRealname) {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        criteria.andEqualTo("userRealname", userRealname);
 
         return userMapper.selectByExample(example);
     }

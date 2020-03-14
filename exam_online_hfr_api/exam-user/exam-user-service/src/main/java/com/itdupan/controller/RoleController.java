@@ -23,8 +23,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("addRole")
-    public @ResponseBody
-    ResultBean addRole(@RequestBody Role role) {
+    public ResultBean<Void> addRole(@RequestBody Role role) {
         List<Role> list = roleService.findRolesByRoleName(role.getRoleName());
         if (list.size() >= 1) {
             return new ResultBean(600, "角色已存在，不允许重复添加！", null);
@@ -34,21 +33,20 @@ public class RoleController {
     }
 
     /**
-     * 通过主键删除
+     * 通过id删除
      *
      * @param roleId
      * @return
      */
     @DeleteMapping("delRoleById")
-    public @ResponseBody
-    ResultBean delRoleById(@RequestParam("roleId") Long roleId) {
+    public ResultBean<Void> delRoleById(@RequestParam("roleId") Long roleId) {
         try {
             roleService.delRoleById(roleId);
             System.out.println(roleId);
             return new ResultBean(204, "删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultBean(600, "删除失败，该角色可能被权限表引用到！", null);
+            return new ResultBean(600, "删除失败，该角色可能被其它因素引用到！", null);
         }
     }
 
@@ -59,8 +57,7 @@ public class RoleController {
      * @return
      */
     @PutMapping("updateRole")
-    public @ResponseBody
-    ResultBean updateRole(@RequestBody Role role) {
+    public ResultBean<Void> updateRole(@RequestBody Role role) {
         List<Role> list = roleService.findRolesByRoleName(role.getRoleName());
         if (list.size() >= 1) {
             return new ResultBean(600, "修改失败，角色已存在！", null);
@@ -76,8 +73,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRoleById")
-    public @ResponseBody
-    ResultBean getRoleById(@RequestParam("roleId") Long roleId) {
+    public ResultBean<Role> getRoleById(@RequestParam("roleId") Long roleId) {
         Role role = roleService.findRoleById(roleId);
         if (role == null) {
             return new ResultBean(600, "角色不存在！", null);
@@ -91,8 +87,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRoles")
-    public @ResponseBody
-    ResultBean findAll() {
+    public ResultBean<List<Role>> findAll() {
         List<Role> list = roleService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }
@@ -106,14 +101,14 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRolesByPage")
-    public @ResponseBody
-    ResultBean findRolesByPage(
+    public ResultBean<PageResult<Role>> findRolesByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "roleName", required = false) String roleName) {
         PageResult<Role> rolesByPage = roleService.findRolesByPage(page, rows, roleName);
         return new ResultBean(200, "查询成功！", rolesByPage);
     }
+
 
     /**
      * 通过名称查询列表
@@ -122,8 +117,9 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRolesByRoleName")
-    public @ResponseBody
-    ResultBean findRolesByRoleName(@RequestParam("roleName") String roleName) {
+    public ResultBean<List<Role>> findRolesByRoleName(@RequestParam("roleName") String roleName) {
         return new ResultBean(200, "查询成功！", roleService.findRolesByRoleName(roleName));
     }
+
+
 }

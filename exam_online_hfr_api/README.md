@@ -3,10 +3,10 @@
 ## 接口说明
 
 - 接口基准地址：`http://zuul.itdupan.com/api/`
-  - 示例：`http://zuul.itdupan.com/api/school/grade/findGrades`，其中api为zuul网关前缀，所有请求首先经过zuul网关，方便认证和授权，school为zuul转发到的微服务路径，/grade/findGrades为controller处理请求。
+  - 示例：`http://zuul.itdupan.com/api/school/grade/findGrades`，其中api为zuul网关前缀，所有请求首先经过zuul网关，方便认证和授权，school为zuul转发到的微服务路径，/grade/findGrades为controller为controller请求路径
 - 服务端已开启cors跨域支持
   - 只允许`http://hongfurui.itdupan.com`和`http://exam.itdupan.com`两个域名对`http://zuul.itdupan.com`进行跨域访问
-- 认证统一使用toen认证，token携带在cookie中，cookieName为"HFR_TOKEN"（HFR为作者姓名字母首拼音，嘻嘻）
+- 认证统一使用toen认证，token携带在cookie中，cookieName为"HFR_TOKEN"（HFR为作者姓名字母首拼音）
 - 请求方式
 
 ```
@@ -67,6 +67,8 @@ DELETE 删除
 ## 系统管理部分API
 
 ### 用户
+
+每名用户都只对应一个角色，而且必须要对应一个角色
 
 ### 角色
 

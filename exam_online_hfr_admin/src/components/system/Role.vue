@@ -9,7 +9,7 @@
     <!-- 卡片 -->
     <el-card body-style="padding: 5px 10px;">
       <!-- 搜索表单 -->
-      <el-form label-position="right" label-width="70px" :model="searchroleForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="searchroleForm" size="mini">
         <el-row :gutter="10">
           <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="4">
             <el-form-item label="角色名称">
@@ -25,7 +25,7 @@
         <el-button
           icon="el-icon-circle-plus-outline"
           type="primary"
-          @click="addRoleDialogVisible=true"
+          @click="addRoleDialogVisible=true; addRoleForm.roleName='';"
           size="mini"
         >添加角色</el-button>
       </el-row>
@@ -66,7 +66,7 @@
 
     <!-- 添加功能模态框 -->
     <el-dialog title="添加角色" :visible.sync="addRoleDialogVisible" width="300px">
-      <el-form label-position="right" label-width="70px" :model="addRoleForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="addRoleForm" size="mini">
         <el-row>
           <el-form-item label="角色名称">
             <el-input v-model="addRoleForm.roleName"></el-input>
@@ -81,7 +81,7 @@
     </el-dialog>
     <!-- 修改功能模态框 -->
     <el-dialog title="修改角色" :visible.sync="updateRoleDialogVisible" width="300px">
-      <el-form label-position="right" label-width="70px" :model="updateRoleForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="updateRoleForm" size="mini">
         <el-row>
           <el-form-item label="角色名称">
             <el-input v-model="updateRoleForm.roleName"></el-input>
@@ -110,7 +110,6 @@ export default {
         roleId: 0,
         roleName: ""
       },
-      //updateRoleId: 0,
       //表格数据
       tableData: [],
       //总条数
@@ -131,7 +130,7 @@ export default {
       updateRoleDialogVisible: false
     };
   },
-  //狗子函数，已加载完成
+  //钩子函数，已加载完成
   mounted() {
     this.getRoles();
   },
@@ -194,7 +193,6 @@ export default {
             });
           } else if (res.httpCode === 600) {
             this.addRoleForm.roleName = "";
-            this.addRoleDialogVisible = false;
             this.$notify.error({
               title: res.message
             });

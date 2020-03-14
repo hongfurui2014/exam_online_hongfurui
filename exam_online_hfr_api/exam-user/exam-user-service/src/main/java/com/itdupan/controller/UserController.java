@@ -7,6 +7,7 @@ import com.itdupan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,36 +20,37 @@ public class UserController {
     /**
      * 添加
      *
-     * @param user
+     * @param
      * @return
      */
     @PostMapping("addUser")
-    public @ResponseBody
-    ResultBean addUser(@RequestBody User user) {
-        List<User> list = userService.findUsersByUserName(user.getUserAccount());
+    public ResultBean<Void> addUser(@RequestBody @Valid User user) {
+        List<User> list = userService.findUsersByUserAccount(user.getUserAccount());
         if (list.size() >= 1) {
-            return new ResultBean(600, "用户已存在，不允许重复添加！", null);
+            return new ResultBean(600, "该登录账户已存在！", null);
+        }
+        List<User> list2 = userService.findUsersByRealname(user.getUserRealname());
+        if (list2.size() >= 1) {
+            return new ResultBean(600, "该真实姓名已被使用！", null);
         }
         userService.addUser(user);
         return new ResultBean(201, "添加成功！", null);
     }
 
     /**
-     * 通过主键删除
+     * 通过id删除
      *
      * @param userId
      * @return
      */
     @DeleteMapping("delUserById")
-    public @ResponseBody
-    ResultBean delUserById(@RequestParam("userId") Long userId) {
+    public ResultBean<Void> delUserById(@RequestParam("userId") Long userId) {
         try {
             userService.delUserById(userId);
-            System.out.println(userId);
             return new ResultBean(204, "删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultBean(600, "删除失败，该用户可能被权限表引用到！", null);
+            return new ResultBean(600, "删除失败，该用户可能被其它因素引用到！", null);
         }
     }
 
@@ -59,9 +61,8 @@ public class UserController {
      * @return
      */
     @PutMapping("updateUser")
-    public @ResponseBody
-    ResultBean updateUser(@RequestBody User user) {
-        List<User> list = userService.findUsersByUserName(user.getUserAccount());
+    public ResultBean<Void> updateUser(@RequestBody User user) {
+        List<User> list = userService.findUsersByUserAccount(user.getUserAccount());
         if (list.size() >= 1) {
             return new ResultBean(600, "修改失败，用户已存在！", null);
         }
@@ -76,8 +77,7 @@ public class UserController {
      * @return
      */
     @GetMapping("findUserById")
-    public @ResponseBody
-    ResultBean getUserById(@RequestParam("userId") Long userId) {
+    public ResultBean<User> getUserById(@RequestParam("userId") Long userId) {
         User user = userService.findUserById(userId);
         if (user == null) {
             return new ResultBean(600, "用户不存在！", null);
@@ -91,29 +91,33 @@ public class UserController {
      * @return
      */
     @GetMapping("findUsers")
-    public @ResponseBody
-    ResultBean findAll() {
+    public ResultBean<List<User>> findAll() {
         List<User> list = userService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }
 
     /**
      * 分页查询
-     *
      * @param page
      * @param rows
-     * @param userName
+     * @param userAccount
+     * @param userRealname
+     * @param fkUserGradeId
+     * @param fkUserRoleId
      * @return
      */
     @GetMapping("findUsersByPage")
-    public @ResponseBody
-    ResultBean findUsersByPage(
+    public ResultBean<PageResult<User>> findUsersByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
-            @RequestParam(value = "userName", required = false) String userName) {
-        PageResult<User> usersByPage = userService.findUsersByPage(page, rows, userName);
+            @RequestParam(value = "userAccount", required = false) String userAccount,
+            @RequestParam(value = "userRealname", required = false) String userRealname,
+            @RequestParam(value = "fkUserGradeId", required = false) Integer fkUserGradeId,
+            @RequestParam(value = "fkUserRoleId", required = false) Integer fkUserRoleId) {
+        PageResult<User> usersByPage = userService.findUsersByPage(page, rows, userAccount, userRealname, fkUserGradeId, fkUserRoleId);
         return new ResultBean(200, "查询成功！", usersByPage);
     }
+
 
     /**
      * 通过名称查询列表
@@ -122,8 +126,9 @@ public class UserController {
      * @return
      */
     @GetMapping("findUsersByUserName")
-    public @ResponseBody
-    ResultBean findUsersByUserName(@RequestParam("userName") String userName) {
-        return new ResultBean(200, "查询成功！", userService.findUsersByUserName(userName));
+    public ResultBean<List<User>> findUsersByUserName(@RequestParam("userName") String userName) {
+        return new ResultBean(200, "查询成功！", userService.findUsersByUserAccount(userName));
     }
+
+
 }

@@ -1,17 +1,18 @@
 package com.itdupan.api;
 
 import com.itdupan.bean.ResultBean;
-import com.itdupan.pojo.Grade;
+import com.itdupan.pojo.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface GradeApi {
+public interface SubjectApi {
 
     /**
      * 通过id查询
-     * @param gradeId
+     *
+     * @param subjectId
      * @return
      */
-    @GetMapping("grade/findGradeById")
-    public ResultBean<Grade> getGradeById(@RequestParam("gradeId") Long gradeId);
+    @GetMapping("grade/findSubjectById")
+    public ResultBean<Subject> getSubjectById(@RequestParam("subjectId") Long subjectId);
 }

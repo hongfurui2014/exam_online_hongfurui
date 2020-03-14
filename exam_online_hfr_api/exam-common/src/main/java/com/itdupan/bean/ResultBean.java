@@ -1,17 +1,17 @@
 package com.itdupan.bean;
 
-public class ResultBean {
+public class ResultBean<T> {
 
     private Integer httpCode; //响应状态码
 
     private String message;
 
-    private Object data; //响应数据
+    private T data; //响应数据
 
     public ResultBean() {
     }
 
-    public ResultBean(Integer httpCode, String message, Object data) {
+    public ResultBean(Integer httpCode, String message, T data) {
         this.httpCode = httpCode;
         this.message = message;
         this.data = data;
@@ -33,11 +33,11 @@ public class ResultBean {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 

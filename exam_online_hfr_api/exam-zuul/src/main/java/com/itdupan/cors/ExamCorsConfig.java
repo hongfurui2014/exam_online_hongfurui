@@ -20,13 +20,6 @@ public class ExamCorsConfig {
         config.setAllowCredentials(true);
         //3) 允许的请求方式
         config.addAllowedMethod("*"); //允许所有请求方式
-        /*config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("HEAD");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("PATCH");*/
         // 4）允许的头信息
         config.addAllowedHeader("*");
 

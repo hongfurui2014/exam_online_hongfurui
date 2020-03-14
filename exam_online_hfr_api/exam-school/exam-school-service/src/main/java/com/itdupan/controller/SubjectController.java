@@ -23,32 +23,30 @@ public class SubjectController {
      * @return
      */
     @PostMapping("addSubject")
-    public @ResponseBody
-    ResultBean addSubject(@RequestBody Subject subject) {
+    public ResultBean<Void> addSubject(@RequestBody Subject subject) {
         List<Subject> list = subjectService.findSubjectsBySubjectName(subject.getSubjectName());
         if (list.size() >= 1) {
-            return new ResultBean(600, "科目已存在，不允许重复添加！", null);
+            return new ResultBean(600, "用户已存在，不允许重复添加！", null);
         }
         subjectService.addSubject(subject);
         return new ResultBean(201, "添加成功！", null);
     }
 
     /**
-     * 通过主键删除
+     * 通过id删除
      *
      * @param subjectId
      * @return
      */
     @DeleteMapping("delSubjectById")
-    public @ResponseBody
-    ResultBean delSubjectById(@RequestParam("subjectId") Long subjectId) {
+    public ResultBean<Void> delSubjectById(@RequestParam("subjectId") Long subjectId) {
         try {
             subjectService.delSubjectById(subjectId);
             System.out.println(subjectId);
             return new ResultBean(204, "删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultBean(600, "删除失败，该科目可能被试题表或试卷表引用到！", null);
+            return new ResultBean(600, "删除失败，该用户可能被其它因素引用到！", null);
         }
     }
 
@@ -59,11 +57,10 @@ public class SubjectController {
      * @return
      */
     @PutMapping("updateSubject")
-    public @ResponseBody
-    ResultBean updateSubject(@RequestBody Subject subject) {
+    public ResultBean<Void> updateSubject(@RequestBody Subject subject) {
         List<Subject> list = subjectService.findSubjectsBySubjectName(subject.getSubjectName());
         if (list.size() >= 1) {
-            return new ResultBean(600, "修改失败，科目已存在！", null);
+            return new ResultBean(600, "修改失败，用户已存在！", null);
         }
         subjectService.updateSubject(subject);
         return new ResultBean(201, "修改成功！", null);
@@ -76,11 +73,10 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjectById")
-    public @ResponseBody
-    ResultBean getSubjectById(@RequestParam("subjectId") Long subjectId) {
+    public ResultBean<Subject> getSubjectById(@RequestParam("subjectId") Long subjectId) {
         Subject subject = subjectService.findSubjectById(subjectId);
         if (subject == null) {
-            return new ResultBean(600, "科目不存在！", null);
+            return new ResultBean(600, "用户不存在！", null);
         }
         return new ResultBean(200, "查询成功！", subject);
     }
@@ -91,8 +87,7 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjects")
-    public @ResponseBody
-    ResultBean findAll() {
+    public ResultBean<List<Subject>> findAll() {
         List<Subject> list = subjectService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }
@@ -106,14 +101,14 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjectsByPage")
-    public @ResponseBody
-    ResultBean findSubjectsByPage(
+    public ResultBean<PageResult<Subject>> findSubjectsByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "subjectName", required = false) String subjectName) {
         PageResult<Subject> subjectsByPage = subjectService.findSubjectsByPage(page, rows, subjectName);
         return new ResultBean(200, "查询成功！", subjectsByPage);
     }
+
 
     /**
      * 通过名称查询列表
@@ -122,8 +117,9 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjectsBySubjectName")
-    public @ResponseBody
-    ResultBean findSubjectsBySubjectName(@RequestParam("subjectName") String subjectName) {
+    public ResultBean<List<Subject>> findSubjectsBySubjectName(@RequestParam("subjectName") String subjectName) {
         return new ResultBean(200, "查询成功！", subjectService.findSubjectsBySubjectName(subjectName));
     }
+
+
 }

@@ -1,6 +1,10 @@
 package com.itdupan.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Table(name = "hfr_user")
@@ -10,14 +14,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Length(min = 3, max = 16, message = "登录账户长度在 3 到 16 个字符")
     private String userAccount;
 
+    @Length(min = 2, max = 7, message = "真实姓名长度在 2 到 7 个字符")
     private String userRealname;
 
-    @Transient
+    //@JsonIgnore
+    @Length(min = 5, max = 20, message = "账户密码长度在 5 到 20 个字符")
     private String userPassword;
 
-    @Transient
+    //@JsonIgnore
     private String userSalt;
 
     private Date userAddtime;
@@ -26,14 +33,16 @@ public class User {
 
     private Long fkUserRoleId;
 
-    private Grade grade;
+    @Transient
+    private Grade fkGrade;
 
-    private Role role;
+    @Transient
+    private Role fkRole;
 
     public User() {
     }
 
-    public User(String userAccount, String userRealname, String userPassword, String userSalt, Date userAddtime, Long fkUserGradeId, Long fkUserRoleId, Grade grade, Role role) {
+    public User(String userAccount, String userRealname, String userPassword, String userSalt, Date userAddtime, Long fkUserGradeId, Long fkUserRoleId, Grade fkGrade, Role fkRole) {
         this.userAccount = userAccount;
         this.userRealname = userRealname;
         this.userPassword = userPassword;
@@ -41,8 +50,8 @@ public class User {
         this.userAddtime = userAddtime;
         this.fkUserGradeId = fkUserGradeId;
         this.fkUserRoleId = fkUserRoleId;
-        this.grade = grade;
-        this.role = role;
+        this.fkGrade = fkGrade;
+        this.fkRole = fkRole;
     }
 
     public Long getUserId() {
@@ -109,20 +118,20 @@ public class User {
         this.fkUserRoleId = fkUserRoleId;
     }
 
-    public Grade getGrade() {
-        return grade;
+    public Grade getFkGrade() {
+        return fkGrade;
     }
 
-    public void setGrade(Grade grade) {
-        this.grade = grade;
+    public void setFkGrade(Grade fkGrade) {
+        this.fkGrade = fkGrade;
     }
 
-    public Role getRole() {
-        return role;
+    public Role getFkRole() {
+        return fkRole;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setFkRole(Role fkRole) {
+        this.fkRole = fkRole;
     }
 
     @Override
@@ -136,8 +145,8 @@ public class User {
                 ", userAddtime=" + userAddtime +
                 ", fkUserGradeId=" + fkUserGradeId +
                 ", fkUserRoleId=" + fkUserRoleId +
-                ", grade=" + grade +
-                ", role=" + role +
+                ", fkGrade=" + fkGrade +
+                ", fkRole=" + fkRole +
                 '}';
     }
 }

@@ -9,7 +9,7 @@
     <!-- 卡片 -->
     <el-card body-style="padding: 5px 10px;">
       <!-- 搜索表单 -->
-      <el-form label-position="right" label-width="70px" :model="searchsubjectForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="searchsubjectForm" size="mini">
         <el-row :gutter="10">
           <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="4">
             <el-form-item label="科目名称">
@@ -25,7 +25,7 @@
         <el-button
           icon="el-icon-circle-plus-outline"
           type="primary"
-          @click="addSubjectDialogVisible=true"
+          @click="addSubjectDialogVisible=true; addSubjectForm.subjectName='';"
           size="mini"
         >添加科目</el-button>
       </el-row>
@@ -65,7 +65,7 @@
 
     <!-- 添加功能模态框 -->
     <el-dialog title="添加科目" :visible.sync="addSubjectDialogVisible" width="300px">
-      <el-form label-position="right" label-width="70px" :model="addSubjectForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="addSubjectForm" size="mini">
         <el-row>
           <el-form-item label="科目名称">
             <el-input v-model="addSubjectForm.subjectName"></el-input>
@@ -80,7 +80,7 @@
     </el-dialog>
     <!-- 修改功能模态框 -->
     <el-dialog title="修改科目" :visible.sync="updateSubjectDialogVisible" width="300px">
-      <el-form label-position="right" label-width="70px" :model="updateSubjectForm" size="mini">
+      <el-form label-position="right" label-width="80px" :model="updateSubjectForm" size="mini">
         <el-row>
           <el-form-item label="科目名称">
             <el-input v-model="updateSubjectForm.subjectName"></el-input>
@@ -109,7 +109,6 @@ export default {
         subjectId: 0,
         subjectName: ""
       },
-      //updateSubjectId: 0,
       //表格数据
       tableData: [],
       //总条数
@@ -193,7 +192,6 @@ export default {
             });
           } else if (res.httpCode === 600) {
             this.addSubjectForm.subjectName = "";
-            this.addSubjectDialogVisible = false;
             this.$notify.error({
               title: res.message
             });

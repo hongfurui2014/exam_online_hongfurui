@@ -23,7 +23,7 @@
         <!-- 密码 -->
         <el-form-item prop="password">
           <el-input
-            type="password"
+            show-password
             v-model="loginForm.password"
             prefix-icon="el-icon-lock"
             placeholder="密码"
@@ -70,12 +70,12 @@ export default {
       this.$refs.loginFormRef.validate(valid => {
         //校验失败
         if (!valid) {
-          return
+          return;
         }
 
         //校验成功，发请求去登录
-        this.$message.success("登陆成功！")
-        this.$router.push("/home") //转到首页
+        this.$message.success("登陆成功！");
+        this.$router.push("/home"); //转到首页
 
         //this.$message.error("登录失败！")
       });
