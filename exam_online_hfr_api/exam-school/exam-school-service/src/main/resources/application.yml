@@ -1,0 +1,22 @@
+server:
+  port: 10014
+spring:
+  application:
+    name: exam-school-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/exam_hfr?characterEncoding=utf-8
+    username: root
+    password: 1234
+    hikari:
+      max-lifetime: 28830000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximum-pool-size: 9 # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+mybatis:
+  type-aliases-package: com.itdupan.pojo

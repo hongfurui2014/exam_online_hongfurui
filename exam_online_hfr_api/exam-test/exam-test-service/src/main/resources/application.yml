@@ -1,0 +1,13 @@
+server:
+  port: 10015
+spring:
+  application:
+    name: exam-test-service
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka
+  instance:
+      lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
+      lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期

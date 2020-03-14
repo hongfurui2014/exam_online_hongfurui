@@ -1,0 +1,28 @@
+server:
+  port: 10011
+spring:
+  application:
+    name: exam-zuul
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka
+  instance:
+      lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
+      lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+zuul:
+  prefix: /api
+  routes:
+    exam-auth-service: /auth/**
+    exam-user-service: /user/**
+    exam-school-service: /school/**
+    exam-test-service: /test/**
+  add-host-header: true
+  sensitive-headers: # 覆盖默认敏感头信息
+  host:
+    connect-timeout-millis: 70000 #HTTP连接超时要比Hystrix的大
+    socket-timeout-millis: 100000   #socket超时
+  ribbon:
+    ReadTimeout: 60000
+    ConnectTimeout: 60000

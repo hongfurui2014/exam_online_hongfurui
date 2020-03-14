@@ -1,0 +1,15 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: exam-eureka
+eureka:
+  client:
+    register-with-eureka: false # 不把自己注册到eureka服务列表
+    fetch-registry: false # 不拉取eureka服务信息
+    service-url:
+      defaultZone: http://127.0.0.1:10010/eureka
+    registry-fetch-interval-seconds: 10
+  server:
+      enable-self-preservation: false # 关闭自我保护
+      eviction-interval-timer-in-ms: 10000 # 每隔5秒钟，进行一次服务列表的清理
