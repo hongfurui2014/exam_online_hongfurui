@@ -8,10 +8,12 @@ import com.itdupan.feign.GradeClient;
 import com.itdupan.mapper.UserMapper;
 import com.itdupan.pojo.Grade;
 import com.itdupan.pojo.User;
+import com.itdupan.utils.CodecUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -37,7 +39,10 @@ public class UserService {
      */
     public void addUser(User user) {
         user.setUserAddtime(new Date());
-        user.setUserSalt("guangyignbamiyang");
+        //生成盐值
+        String salt = CodecUtils.generateSalt();
+        user.setUserSalt(salt);
+        user.setUserPassword(CodecUtils.md5Hex(user.getUserPassword(), salt));
         userMapper.insertSelective(user);
     }
 
@@ -56,6 +61,9 @@ public class UserService {
      * @param user
      */
     public void updateUser(User user) {
+        //数据库只会更新非null字段
+        user.setUserPassword(null);
+        user.setUserAddtime(null);
         userMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -67,7 +75,7 @@ public class UserService {
      */
     public User findUserById(Long id) {
         User user = userMapper.selectByPrimaryKey(id);
-        ResultBean<Grade> res = gradeClient.getGradeById(user.getFkUserGradeId());
+        ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
         user.setFkGrade(res.getData());
         user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
         return user;
@@ -79,7 +87,15 @@ public class UserService {
      * @return
      */
     public List<User> findAll() {
-        return userMapper.selectAll();
+        List<User> list = userMapper.selectAll();
+        if(list.size() > 0){
+            for (User user : list){
+                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
+                user.setFkGrade(res.getData());
+                user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
+            }
+        }
+        return list;
     }
 
     /**
@@ -117,10 +133,12 @@ public class UserService {
 
         List<User> list = userMapper.selectByExample(example);
 
-        //为每个用户添加班级和角色
-        for(User u : list){
-            u.setFkGrade(gradeClient.getGradeById(u.getFkUserGradeId()).getData());
-            u.setFkRole(roleService.findRoleById(u.getFkUserRoleId()));
+        if(!CollectionUtils.isEmpty(list)){
+            //为每个用户添加班级和角色
+            for(User u : list){
+                u.setFkGrade(gradeClient.findGradeById(u.getFkUserGradeId()).getData());
+                u.setFkRole(roleService.findRoleById(u.getFkUserRoleId()));
+            }
         }
 
         PageInfo<User> pageInfo = new PageInfo<>(list);
@@ -139,8 +157,15 @@ public class UserService {
         Example.Criteria criteria = example.createCriteria();
 
         criteria.andEqualTo("userAccount", userAccount);
-
-        return userMapper.selectByExample(example);
+        List<User> list = userMapper.selectByExample(example);
+        if(list.size() > 0){
+            for (User user : list){
+                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
+                user.setFkGrade(res.getData());
+                user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
+            }
+        }
+        return list;
     }
 
     /**
@@ -155,6 +180,14 @@ public class UserService {
 
         criteria.andEqualTo("userRealname", userRealname);
 
-        return userMapper.selectByExample(example);
+        List<User> list = userMapper.selectByExample(example);
+        if(list.size() > 0){
+            for (User user : list){
+                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
+                user.setFkGrade(res.getData());
+                user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
+            }
+        }
+        return list;
     }
 }

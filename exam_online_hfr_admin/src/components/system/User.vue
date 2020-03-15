@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>学校操作</el-breadcrumb-item>
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 卡片 -->
@@ -59,7 +59,7 @@
         >添加用户</el-button>
       </el-row>
       <!-- 表格 -->
-      <el-table :data="tableData" stripe border>
+      <el-table :data="tableData" stripe border style="text-align: center">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column prop="userAccount" label="登录账户"></el-table-column>
         <el-table-column prop="userRealname" label="真实姓名"></el-table-column>
@@ -70,9 +70,16 @@
           <template v-slot:default="scope">{{scope.row.fkGrade.gradeName}}</template>
         </el-table-column>
         <el-table-column label="所属角色">
-          <template v-slot:default="scope">{{scope.row.fkRole.roleName }}</template>
+          <template v-slot:default="scope">
+            <span v-if="scope.row.fkRole.roleName == '站长（开发者）'">
+              <el-tag type="danger">{{scope.row.fkRole.roleName }}</el-tag>
+            </span>
+            <span v-else>
+              {{scope.row.fkRole.roleName }}
+            </span>
+          </template>
         </el-table-column>
-        <el-table-column label="操作" width="150px;">
+        <el-table-column label="操作" width="130px;">
           <template v-slot:default="scope">
             <el-button
               @click="updateUser(scope.row.userId)"
@@ -108,7 +115,7 @@
         label-position="right"
         label-width="80px"
         :model="addUserForm"
-        :rules="addUserFormRule"
+        :rules="userFormRule"
         size="mini"
         ref="addFormRef"
       >
@@ -160,10 +167,46 @@
     </el-dialog>
     <!-- 修改功能模态框 -->
     <el-dialog title="修改角色" :visible.sync="updateUserDialogVisible" width="300px">
-      <el-form label-position="right" label-width="80px" :model="updateUserForm" size="mini">
+      <el-form
+        label-position="right"
+        label-width="80px"
+        :model="updateUserForm"
+        :rules="userFormRule"
+        size="mini"
+        ref="updateFormRef"
+      >
         <el-row>
-          <el-form-item label="角色名称">
-            <el-input v-model="updateUserForm.userName"></el-input>
+          <el-form-item label="登录账户" prop="userAccount">
+            <el-input v-model="updateUserForm.userAccount"></el-input>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="真实姓名" prop="userRealname">
+            <el-input v-model="updateUserForm.userRealname"></el-input>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="所属班级" prop="fkUserGradeId">
+            <el-select v-model="updateUserForm.fkUserGradeId" placeholder="- 请选择 -" width="100%">
+              <el-option
+                v-for="item in updateUserForm.grade"
+                :key="item.gradeId"
+                :label="item.gradeName"
+                :value="item.gradeId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="所属角色" prop="fkUserRoleId">
+            <el-select v-model="updateUserForm.fkUserRoleId" placeholder="- 请选择 -">
+              <el-option
+                v-for="item in updateUserForm.role"
+                :key="item.roleId"
+                :label="item.roleName"
+                :value="item.roleId"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-row>
       </el-form>
@@ -180,11 +223,6 @@
 export default {
   data() {
     return {
-      //修改表单
-      updateUserForm: {
-        userId: 0,
-        userName: ""
-      },
       //表格数据
       tableData: [],
       //总条数
@@ -210,8 +248,18 @@ export default {
         role: [],
         fkUserRoleId: ""
       },
+      //修改form
+      updateUserForm: {
+        userId: "",
+        userAccount: "",
+        userRealname: "",
+        grade: [],
+        fkUserGradeId: "",
+        role: [],
+        fkUserRoleId: ""
+      },
       //添加表单验证规则
-      addUserFormRule: {
+      userFormRule: {
         userAccount: [
           { required: true, message: "请输入登录账户", trigger: "blur" },
           { min: 3, max: 16, message: "长度在 3 到 16 个字符", trigger: "blur" }
@@ -227,7 +275,9 @@ export default {
         fkUserGradeId: [
           { required: true, message: "请选择所属班级", trigger: "blur" }
         ],
-        fkUserRoleId: [{ required: true, message: "请选择所属角色", trigger: "blur" }]
+        fkUserRoleId: [
+          { required: true, message: "请选择所属角色", trigger: "blur" }
+        ]
       },
       //添加模态框是否显示
       addUserDialogVisible: false,
@@ -273,7 +323,22 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          this.$notify.error({
+            title: error.response.data.message
+          });
+        });
+    },
+    //为更新表单添加班级列表
+    getUpdateGrades() {
+      this.$http
+        .get("school/grade/findGrades")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            this.updateUserForm.grade = res.data;
+          }
+        })
+        .catch(error => {
           this.$notify.error({
             title: error.response.data.message
           });
@@ -304,6 +369,23 @@ export default {
           const res = response.data;
           if (res.httpCode === 200) {
             this.addUserForm.role = res.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.$notify.error({
+            title: error.response.data.message
+          });
+        });
+    },
+    //为修改表单添加角色列表
+    getUpdateRoles() {
+      this.$http
+        .get("user/role/findRoles")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            this.updateUserForm.role = res.data;
           }
         })
         .catch(error => {
@@ -399,7 +481,7 @@ export default {
     },
     //删除
     deleteUser(userId) {
-      this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -446,8 +528,14 @@ export default {
         .then(response => {
           const res = response.data;
           if (res.httpCode === 200) {
+            this.getUpdateGrades();
+            this.getUpdateRoles();
             this.updateUserForm.userId = userId;
-            this.updateUserForm.userName = res.data.userName;
+            this.updateUserForm.userAccount = res.data.userAccount;
+            this.updateUserForm.userRealname = res.data.userRealname;
+            this.updateUserForm.fkUserGradeId = res.data.fkUserGradeId;
+            this.updateUserForm.fkUserRoleId = res.data.fkUserRoleId;
+
             this.updateUserDialogVisible = true;
           }
         })
@@ -455,28 +543,33 @@ export default {
     },
     //确认修改
     updateUserYes() {
-      this.$http
-        .put("user/user/updateUser", this.updateUserForm)
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 201) {
-            this.updateUserDialogVisible = false;
-            this.getUsers();
-            this.$notify.success({
-              title: res.message
+      this.$refs.updateFormRef.validate(valid => {
+        if (valid) {
+          //校验通过
+          this.$http
+            .put("user/user/updateUser", this.updateUserForm)
+            .then(response => {
+              const res = response.data;
+              if (res.httpCode === 201) {
+                this.updateUserDialogVisible = false;
+                this.getUsers();
+                this.$notify.success({
+                  title: res.message
+                });
+              } else if (res.httpCode === 600) {
+                this.$notify.error({
+                  title: res.message
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.$notify.error({
+                title: error.response.data.message
+              });
             });
-          } else if (res.httpCode === 600) {
-            this.$notify.error({
-              title: res.message
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
+        }
+      });
     },
     //按下添加用户按钮
     addBefore() {
@@ -494,4 +587,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
+el-table {
+  text-align: center;
+}
 </style>

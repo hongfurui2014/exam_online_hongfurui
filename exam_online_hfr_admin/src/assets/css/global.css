@@ -21,7 +21,22 @@ html, body, #app{
     margin: 10px 0px;
 }
 
+.el-table td, .el-table th{
+    text-align: center !important;
+}
+
+.topic .cell {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
 .el-pagination{
     margin: 0px 0px 8px 0px;
     float: right;
+}
+
+.el-select{
+    width: 100%;
+    
 }

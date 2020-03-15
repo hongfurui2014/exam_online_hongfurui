@@ -37,12 +37,6 @@
             </template>
           </el-menu-item>
 
-          <el-menu-item index="2-3">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>菜单管理</span>
-            </template>
-          </el-menu-item>
         </el-submenu>
 
         <el-submenu index="3">
@@ -51,7 +45,7 @@
             <span>考试管理</span>
           </template>
 
-          <el-menu-item index="/school/grade">
+          <el-menu-item index="/test/topic">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>试题管理</span>

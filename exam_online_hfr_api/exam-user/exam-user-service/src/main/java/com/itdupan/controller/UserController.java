@@ -64,7 +64,12 @@ public class UserController {
     public ResultBean<Void> updateUser(@RequestBody User user) {
         List<User> list = userService.findUsersByUserAccount(user.getUserAccount());
         if (list.size() >= 1) {
-            return new ResultBean(600, "修改失败，用户已存在！", null);
+            return new ResultBean(600, "修改失败，登录账户已存在！", null);
+        }
+
+        List<User> list2 = userService.findUsersByRealname(user.getUserRealname());
+        if (list2.size() >= 1) {
+            return new ResultBean(600, "修改失败，真实姓名已存在！", null);
         }
         userService.updateUser(user);
         return new ResultBean(201, "修改成功！", null);
@@ -77,7 +82,7 @@ public class UserController {
      * @return
      */
     @GetMapping("findUserById")
-    public ResultBean<User> getUserById(@RequestParam("userId") Long userId) {
+    public ResultBean<User> findUserById(@RequestParam("userId") Long userId) {
         User user = userService.findUserById(userId);
         if (user == null) {
             return new ResultBean(600, "用户不存在！", null);
@@ -91,7 +96,7 @@ public class UserController {
      * @return
      */
     @GetMapping("findUsers")
-    public ResultBean<List<User>> findAll() {
+    public ResultBean<List<User>> findUsers() {
         List<User> list = userService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }
@@ -120,15 +125,24 @@ public class UserController {
 
 
     /**
-     * 通过名称查询列表
+     * 通过登录账户查询列表
      *
-     * @param userName
+     * @param userAccount
      * @return
      */
-    @GetMapping("findUsersByUserName")
-    public ResultBean<List<User>> findUsersByUserName(@RequestParam("userName") String userName) {
-        return new ResultBean(200, "查询成功！", userService.findUsersByUserAccount(userName));
+    @GetMapping("findUsersByuserAccount")
+    public ResultBean<List<User>> findUsersByUserName(@RequestParam("userAccount") String userAccount) {
+        return new ResultBean(200, "查询成功！", userService.findUsersByUserAccount(userAccount));
     }
 
-
+    /**
+     * 通过真实姓名查询列表
+     *
+     * @param userRealname
+     * @return
+     */
+    @GetMapping("findUsersByUserRealname")
+    public ResultBean<List<User>> findUsersByUserRealname(@RequestParam("userRealname") String userRealname) {
+        return new ResultBean(200, "查询成功！", userService.findUsersByRealname(userRealname));
+    }
 }

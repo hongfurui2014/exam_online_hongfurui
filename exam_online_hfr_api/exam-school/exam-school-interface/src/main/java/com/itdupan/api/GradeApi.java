@@ -13,5 +13,5 @@ public interface GradeApi {
      * @return
      */
     @GetMapping("grade/findGradeById")
-    public ResultBean<Grade> getGradeById(@RequestParam("gradeId") Long gradeId);
+    public ResultBean<Grade> findGradeById(@RequestParam("gradeId") Long gradeId);
 }

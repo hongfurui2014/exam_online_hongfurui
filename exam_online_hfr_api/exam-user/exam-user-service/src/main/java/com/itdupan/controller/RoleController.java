@@ -73,7 +73,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRoleById")
-    public ResultBean<Role> getRoleById(@RequestParam("roleId") Long roleId) {
+    public ResultBean<Role> findRoleById(@RequestParam("roleId") Long roleId) {
         Role role = roleService.findRoleById(roleId);
         if (role == null) {
             return new ResultBean(600, "角色不存在！", null);
@@ -87,7 +87,7 @@ public class RoleController {
      * @return
      */
     @GetMapping("findRoles")
-    public ResultBean<List<Role>> findAll() {
+    public ResultBean<List<Role>> findRoles() {
         List<Role> list = roleService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }

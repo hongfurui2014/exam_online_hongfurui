@@ -73,7 +73,7 @@ public class GradeController {
      * @return
      */
     @GetMapping("findGradeById")
-    public ResultBean<Grade> getGradeById(@RequestParam("gradeId") Long gradeId) {
+    public ResultBean<Grade> findGradeById(@RequestParam("gradeId") Long gradeId) {
         Grade grade = gradeService.findGradeById(gradeId);
         if (grade == null) {
             return new ResultBean(600, "班级不存在！", null);
@@ -87,7 +87,7 @@ public class GradeController {
      * @return
      */
     @GetMapping("findGrades")
-    public ResultBean<List<Grade>> findAll() {
+    public ResultBean<List<Grade>> findGrades() {
         List<Grade> list = gradeService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }

@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: exam-test-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/exam_hfr?characterEncoding=utf-8
+    username: root
+    password: 1234
+    hikari:
+      max-lifetime: 28830000
+      maximum-pool-size: 9
 eureka:
   client:
     registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
@@ -11,3 +18,5 @@ eureka:
   instance:
       lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
       lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+mybatis:
+  type-aliases-package: com.itdupan.pojo

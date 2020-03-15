@@ -73,7 +73,7 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjectById")
-    public ResultBean<Subject> getSubjectById(@RequestParam("subjectId") Long subjectId) {
+    public ResultBean<Subject> findSubjectById(@RequestParam("subjectId") Long subjectId) {
         Subject subject = subjectService.findSubjectById(subjectId);
         if (subject == null) {
             return new ResultBean(600, "用户不存在！", null);
@@ -87,7 +87,7 @@ public class SubjectController {
      * @return
      */
     @GetMapping("findSubjects")
-    public ResultBean<List<Subject>> findAll() {
+    public ResultBean<List<Subject>> findSubjects() {
         List<Subject> list = subjectService.findAll();
         return new ResultBean(200, "查询成功！", list);
     }

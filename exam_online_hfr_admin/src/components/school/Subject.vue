@@ -33,7 +33,7 @@
       <el-table :data="tableData" stripe border>
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column prop="subjectName" label="科目名称"></el-table-column>
-        <el-table-column label="操作" width="150px;">
+        <el-table-column label="操作" width="130px;">
           <template v-slot:default="scope">
             <el-button
               @click="updateSubject(scope.row.subjectId)"

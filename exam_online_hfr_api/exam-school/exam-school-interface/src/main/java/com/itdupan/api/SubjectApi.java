@@ -13,6 +13,7 @@ public interface SubjectApi {
      * @param subjectId
      * @return
      */
-    @GetMapping("grade/findSubjectById")
-    public ResultBean<Subject> getSubjectById(@RequestParam("subjectId") Long subjectId);
+    @GetMapping("subject/findSubjectById")
+    public ResultBean<Subject> findSubjectById(@RequestParam("subjectId") Long subjectId);
+
 }
