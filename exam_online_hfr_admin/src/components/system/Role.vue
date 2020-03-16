@@ -21,7 +21,7 @@
       <!-- 按钮 -->
       <el-row :gutter="10" class="importexport" style="margin-left: 0px;">
         <el-button icon="el-icon-search" @click="searchRole" type="success" size="mini">搜索</el-button>
-        <el-button icon="el-icon-refresh" @click="clear" size="mini">清空</el-button>
+        <el-button icon="el-icon-refresh" @click="clear" size="mini">清空搜索</el-button>
         <el-button
           icon="el-icon-circle-plus-outline"
           type="primary"

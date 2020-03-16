@@ -10,6 +10,9 @@ spring:
     hikari:
       max-lifetime: 28830000
       maximum-pool-size: 9
+  servlet:
+    multipart:
+      max-file-size: 2MB
 eureka:
   client:
     registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
