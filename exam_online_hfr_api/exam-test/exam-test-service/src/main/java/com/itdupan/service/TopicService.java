@@ -86,16 +86,16 @@ public class TopicService {
      *
      * @return
      */
-//    public List<Topic> findAll() {
-//        List<Topic> list = topicMapper.selectAll();
-//        if(!CollectionUtils.isEmpty(list)){
-//            for (Topic topic : list){
-//                ResultBean<Subject> res = subjectClient.findSubjectById(topic.getFkTopicSubjectId());
-//                topic.setFkSubject(res.getData());
-//            }
-//        }
-//        return list;
-//    }
+    public List<Topic> findAll() {
+        List<Topic> list = topicMapper.selectAll();
+        if(!CollectionUtils.isEmpty(list)){
+            for (Topic topic : list){
+                ResultBean<Subject> res = subjectClient.findSubjectById(topic.getFkTopicSubjectId());
+                topic.setFkSubject(res.getData());
+            }
+        }
+        return list;
+    }
 
     /**
      * 分页查询
@@ -111,6 +111,7 @@ public class TopicService {
         PageHelper.startPage(page, rows);
 
         Example example = new Example(Topic.class);
+
         Example.Criteria criteria = example.createCriteria();
 
         if(topicType != null){

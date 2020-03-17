@@ -62,15 +62,6 @@ public class UserController {
      */
     @PutMapping("updateUser")
     public ResultBean<Void> updateUser(@RequestBody User user) {
-        List<User> list = userService.findUsersByUserAccount(user.getUserAccount());
-        if (list.size() >= 1) {
-            return new ResultBean(600, "修改失败，登录账户已存在！", null);
-        }
-
-        List<User> list2 = userService.findUsersByRealname(user.getUserRealname());
-        if (list2.size() >= 1) {
-            return new ResultBean(600, "修改失败，真实姓名已存在！", null);
-        }
         userService.updateUser(user);
         return new ResultBean(201, "修改成功！", null);
     }

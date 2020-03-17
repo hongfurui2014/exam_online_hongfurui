@@ -52,10 +52,10 @@
             </template>
           </el-menu-item>
 
-          <el-menu-item index="3-2">
+          <el-menu-item index="/test/test">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>考卷管理</span>
+              <span>试卷管理</span>
             </template>
           </el-menu-item>
 

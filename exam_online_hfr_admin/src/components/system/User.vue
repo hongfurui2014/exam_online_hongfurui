@@ -166,7 +166,7 @@
       </span>
     </el-dialog>
     <!-- 修改功能模态框 -->
-    <el-dialog title="修改角色" :visible.sync="updateUserDialogVisible" width="300px">
+    <el-dialog title="修改用户" :visible.sync="updateUserDialogVisible" width="300px">
       <el-form
         label-position="right"
         label-width="80px"
@@ -177,12 +177,12 @@
       >
         <el-row>
           <el-form-item label="登录账户" prop="userAccount">
-            <el-input v-model="updateUserForm.userAccount"></el-input>
+            <el-input disabled v-model="updateUserForm.userAccount"></el-input>
           </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="真实姓名" prop="userRealname">
-            <el-input v-model="updateUserForm.userRealname"></el-input>
+            <el-input disabled v-model="updateUserForm.userRealname"></el-input>
           </el-form-item>
         </el-row>
         <el-row>

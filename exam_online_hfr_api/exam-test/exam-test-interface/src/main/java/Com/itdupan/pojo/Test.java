@@ -1,12 +1,10 @@
 package Com.itdupan.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.itdupan.pojo.Grade;
 import com.itdupan.pojo.Subject;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "hfr_test")
@@ -18,13 +16,27 @@ public class Test {
 
     private String testName;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date testBeforetime;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date testAftertime;
 
     private Integer testTimesum;
 
+    private Integer testSelectOneSum;
+
+    private Integer testSelectMoreSum;
+
+    private Integer testJudgeSum;
+
     private Integer testTopicsum;
+
+    private Integer testSimpleSum;
+
+    private Integer testMiddleSum;
+
+    private Integer testDiffSum;
 
     private Integer testScores;
 
@@ -40,25 +52,9 @@ public class Test {
 
     private Subject fkSubject;
 
-    private String testState;   //试卷状态，"已考" "待考"
+    private Integer testState;   //试卷状态，0待考 1正在考试中 2已考
 
     public Test() {
-    }
-
-    public Test(String testName, Date testBeforetime, Date testAftertime, Integer testTimesum, Integer testTopicsum, Integer testScores, Integer testPass, Date testAddtime, Long fkTestGradeId, Long fkTestSubjectId, Grade fkGrade, Subject fkSubject, String testState) {
-        this.testName = testName;
-        this.testBeforetime = testBeforetime;
-        this.testAftertime = testAftertime;
-        this.testTimesum = testTimesum;
-        this.testTopicsum = testTopicsum;
-        this.testScores = testScores;
-        this.testPass = testPass;
-        this.testAddtime = testAddtime;
-        this.fkTestGradeId = fkTestGradeId;
-        this.fkTestSubjectId = fkTestSubjectId;
-        this.fkGrade = fkGrade;
-        this.fkSubject = fkSubject;
-        this.testState = testState;
     }
 
     public Long getTestId() {
@@ -101,12 +97,60 @@ public class Test {
         this.testTimesum = testTimesum;
     }
 
+    public Integer getTestSelectOneSum() {
+        return testSelectOneSum;
+    }
+
+    public void setTestSelectOneSum(Integer testSelectOneSum) {
+        this.testSelectOneSum = testSelectOneSum;
+    }
+
+    public Integer getTestSelectMoreSum() {
+        return testSelectMoreSum;
+    }
+
+    public void setTestSelectMoreSum(Integer testSelectMoreSum) {
+        this.testSelectMoreSum = testSelectMoreSum;
+    }
+
+    public Integer getTestJudgeSum() {
+        return testJudgeSum;
+    }
+
+    public void setTestJudgeSum(Integer testJudgeSum) {
+        this.testJudgeSum = testJudgeSum;
+    }
+
     public Integer getTestTopicsum() {
         return testTopicsum;
     }
 
     public void setTestTopicsum(Integer testTopicsum) {
         this.testTopicsum = testTopicsum;
+    }
+
+    public Integer getTestSimpleSum() {
+        return testSimpleSum;
+    }
+
+    public void setTestSimpleSum(Integer testSimpleSum) {
+        this.testSimpleSum = testSimpleSum;
+    }
+
+    public Integer getTestMiddleSum() {
+        return testMiddleSum;
+    }
+
+    public void setTestMiddleSum(Integer testMiddleSum) {
+        this.testMiddleSum = testMiddleSum;
+    }
+
+    public Integer getTestDiffSum() {
+        return testDiffSum;
+    }
+
+    public void setTestDiffSum(Integer testDiffSum) {
+        this.testDiffSum = testDiffSum;
     }
 
     public Integer getTestScores() {
@@ -165,31 +209,11 @@ public class Test {
         this.fkSubject = fkSubject;
     }
 
-    public String getTestState() {
+    public Integer getTestState() {
         return testState;
     }
 
-    public void setTestState(String testState) {
+    public void setTestState(Integer testState) {
         this.testState = testState;
-    }
-
-    @Override
-    public String toString() {
-        return "Test{" +
-                "testId=" + testId +
-                ", testName='" + testName + '\'' +
-                ", testBeforetime=" + testBeforetime +
-                ", testAftertime=" + testAftertime +
-                ", testTimesum=" + testTimesum +
-                ", testTopicsum=" + testTopicsum +
-                ", testScores=" + testScores +
-                ", testPass=" + testPass +
-                ", testAddtime=" + testAddtime +
-                ", fkTestGradeId=" + fkTestGradeId +
-                ", fkTestSubjectId=" + fkTestSubjectId +
-                ", fkGrade=" + fkGrade +
-                ", fkSubject=" + fkSubject +
-                ", testState='" + testState + '\'' +
-                '}';
     }
 }

@@ -8,6 +8,7 @@ import Role from '../components/system/Role'
 import Grade from '../components/school/Grade'
 import Subject from '../components/school/Subject'
 import Topic from '../components/test/Topic'
+import Test from '../components/test/Test'
 
 Vue.use(Router)
 
@@ -23,7 +24,8 @@ const router = new Router({
         { path: '/system/role', component: Role },
         { path: '/school/grade', component: Grade },
         { path: '/school/subject', component: Subject },
-        { path: '/test/topic', component: Topic }
+        { path: '/test/topic', component: Topic },
+        { path: '/test/test', component: Test }
       ]
     },
     {

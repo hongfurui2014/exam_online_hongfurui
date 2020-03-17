@@ -24,7 +24,7 @@ public class TestController {
     @PostMapping("addTest")
     public ResultBean<Void> addTest(@RequestBody Test test) {
         testService.addTest(test);
-        return new ResultBean(201, "添加成功！", null);
+        return new ResultBean(201, "组卷成功！", null);
     }
 
     /**
@@ -52,7 +52,6 @@ public class TestController {
      */
     @PutMapping("updateTest")
     public ResultBean<Void> updateTest(@RequestBody Test test) {
-        System.out.println(test);
         testService.updateTest(test);
         return new ResultBean(201, "修改成功！", null);
     }
@@ -87,8 +86,7 @@ public class TestController {
      * 分页查询
      * @param page
      * @param rows
-     * @param testType
-     * @param testLevel
+     * @param fkTestGradeId
      * @param fkTestSubjectId
      * @return
      */
@@ -96,10 +94,9 @@ public class TestController {
     public ResultBean<PageResult<Test>> findTestsByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
-            @RequestParam(value = "testType", required = false) Integer testType,
-            @RequestParam(value = "testLevel", required = false) Integer testLevel,
+            @RequestParam(value = "fkTestGradeId", required = false) Integer fkTestGradeId,
             @RequestParam(value = "fkTestSubjectId", required = false) Integer fkTestSubjectId){
-        PageResult<Test> testsByPage = testService.findTestsByPage(page, rows, testType, testLevel, fkTestSubjectId);
+        PageResult<Test> testsByPage = testService.findTestsByPage(page, rows, fkTestGradeId, fkTestSubjectId);
         return new ResultBean(200, "查询成功！", testsByPage);
     }
 }
