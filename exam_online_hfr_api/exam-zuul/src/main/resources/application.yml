@@ -3,6 +3,13 @@ server:
 spring:
   application:
     name: exam-zuul
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/exam_hfr?characterEncoding=utf-8
+      username: root
+      password: 1234
+      hikari:
+        max-lifetime: 28830000
+        maximum-pool-size: 9
 eureka:
   client:
     registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
@@ -18,11 +25,18 @@ zuul:
     exam-user-service: /user/**
     exam-school-service: /school/**
     exam-test-service: /test/**
-  add-host-header: true
-  sensitive-headers: # 覆盖默认敏感头信息
+  add-host-header: true # 转到微服务时携带域名
+  sensitive-headers:   # 覆盖默认敏感头信息，不忽略Cookie Set-Cookie Authorization请求头信息
   host:
     connect-timeout-millis: 70000 #HTTP连接超时要比Hystrix的大
     socket-timeout-millis: 100000   #socket超时
   ribbon:
     ReadTimeout: 60000
     ConnectTimeout: 60000
+itdupan:
+  jwt:
+    pubKeyPath: D:\\rsa.pub # 公钥地址
+    cookieName: HFR_TOKEN
+  filter:
+    allowPaths:
+      - /api/auth

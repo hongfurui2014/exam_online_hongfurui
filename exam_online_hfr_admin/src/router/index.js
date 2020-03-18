@@ -15,11 +15,11 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: Home,
-      redirect: '/welcome',
+      redirect: '/admin',
       children: [
-        { path: '/welcome', component: Welcome },
+        { path: '/admin', component: Welcome },
         { path: '/system/user', component: User },
         { path: '/system/role', component: Role },
         { path: '/school/grade', component: Grade },
@@ -31,10 +31,6 @@ const router = new Router({
     {
       path: '/login',
       component: Login
-    },
-    {
-      path: '/',
-      redirect: '/login'
     }
   ]
 })
@@ -44,9 +40,24 @@ router.beforeEach((to, from, next) => {
   // to 将要访问的路径
   // from 代表从哪个路径跳转而来
   // next 是一个函数，表示放行
-  //     next()  放行    next('/login')  强制跳转
-  //if (to.path === '/login') return next()
-  next()
+  // next()  放行 next('/login')  强制跳转
+  if (to.path === '/login') return next();
+  const token_cookie = getCookie('HFR_TOKEN');
+  if (!token_cookie) return next('/login');
+  next();
 })
+
+function getCookie(name) {
+  var strcookie = document.cookie;//获取cookie字符串
+  var arrcookie = strcookie.split("; ");//分割
+  //遍历匹配
+  for (var i = 0; i < arrcookie.length; i++) {
+    var arr = arrcookie[i].split("=");
+    if (arr[0] == name) {
+      return arr[1];
+    }
+  }
+  return "";
+}
 
 export default router

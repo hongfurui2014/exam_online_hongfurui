@@ -190,4 +190,36 @@ public class UserService {
         }
         return list;
     }
+
+    /**
+     * 根据用户名和密码查询
+     * @param username
+     * @param password
+     * @return
+     */
+    public User login(String username, String password) {
+        List<User> l = findUsersByUserAccount(username);
+        if (CollectionUtils.isEmpty(l)){
+            return null;
+        }
+
+        String salt = l.get(0).getUserSalt();
+        String userPass = CodecUtils.md5Hex(password, salt);
+
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        criteria.andEqualTo("userPassword", userPass);
+
+        List<User> list = userMapper.selectByExample(example);
+        if(list.size() > 0){
+            for (User user : list){
+                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
+                user.setFkGrade(res.getData());
+                user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
+            }
+            return list.get(0);
+        }
+        return null;
+    }
 }

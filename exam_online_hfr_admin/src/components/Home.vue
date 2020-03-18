@@ -179,13 +179,6 @@ export default {
   }
 }
 
-.el-main {
-  //padding: 0px 20px;
-  //margin: 10px;
-  //background-color: red;
-  //margin: 10px;
-}
-
 .el-container {
   height: 100%;
 }

@@ -15,6 +15,7 @@
         size="mini"
         ref="loginFormRef"
       >
+        <div style="padding: 15px 9px 10px 39px; color: #666;font-size: 12px;">在线考试系统 - 后台管理登录</div>
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="用户名"></el-input>
@@ -32,8 +33,7 @@
 
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login">登录</el-button>
-          <el-button type="info" @click="resetLoginForm">重置</el-button>
+          <el-button type="primary" @click="login" style="width: 100%;">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "admin",
-        password: "admin"
+        username: "maxin",
+        password: "2866908123wwe"
       },
 
       //验证规则
@@ -63,9 +63,6 @@ export default {
     };
   },
   methods: {
-    resetLoginForm() {
-      this.$refs.loginFormRef.resetFields();
-    },
     login() {
       this.$refs.loginFormRef.validate(valid => {
         //校验失败
@@ -73,11 +70,31 @@ export default {
           return;
         }
 
-        //校验成功，发请求去登录
-        this.$message.success("登陆成功！");
-        this.$router.push("/home"); //转到首页
+        let param = new URLSearchParams();
+        param.append("username", this.loginForm.username);
+        param.append("password", this.loginForm.password);
 
-        //this.$message.error("登录失败！")
+        this.$http
+          .post("auth/auth/login", param)
+          .then(response => {
+            const res = response.data;
+            if (res.httpCode === 200) {
+              this.$notify.success({
+                title: res.message
+              });
+              this.$router.push("/"); //转到首页
+            } else if (res.httpCode === 600) {
+              this.$notify.error({
+                title: res.message
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.$notify.error({
+              title: error.response.data.message
+            });
+          });
       });
     }
   }
@@ -91,14 +108,14 @@ export default {
 }
 
 .login_box {
-  width: 320px;
-  height: 220px;
+  width: 270px;
+  height: 240px;
   background-color: #fff;
   border-radius: 5px;
 
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 40%;
   transform: translate(-50%, -50%);
 
   .avatar_box {

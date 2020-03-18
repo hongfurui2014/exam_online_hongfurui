@@ -9,8 +9,26 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import './assets/css/global.css'
 
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 import axios from 'axios'
 axios.defaults.baseURL = "http://zuul.itdupan.com/api/"	//可以设置根路径
+
+// 允许携带cookie
+axios.defaults.withCredentials = true
+
+//在request拦截器中展示进度条
+axios.interceptors.request.use(function (config) {
+  NProgress.start();
+  return config;
+})
+
+//在response拦截器中隐藏进度条
+axios.interceptors.response.use(function (config) {
+  NProgress.done();
+  return config;
+})
 
 Vue.prototype.$http = axios
 
@@ -18,7 +36,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
-Vue.filter('dateFormat', function(originVal) {
+Vue.filter('dateFormat', function (originVal) {
   const dt = new Date(originVal)
 
   const y = dt.getFullYear()

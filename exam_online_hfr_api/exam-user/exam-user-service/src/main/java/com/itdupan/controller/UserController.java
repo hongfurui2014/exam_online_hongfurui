@@ -136,4 +136,19 @@ public class UserController {
     public ResultBean<List<User>> findUsersByUserRealname(@RequestParam("userRealname") String userRealname) {
         return new ResultBean(200, "查询成功！", userService.findUsersByRealname(userRealname));
     }
+
+    /**
+     * 根据用户名和密码查询
+     * @param username
+     * @param password
+     * @return
+     */
+    @GetMapping("login")
+    public ResultBean<User> login(@RequestParam("username") String username, @RequestParam("password") String password){
+        User user = userService.login(username, password);
+        if(user == null){
+            return new ResultBean<User>(600, "用户名或密码错误！", null);
+        }
+        return new ResultBean<User>(200, "用户获取成功！", user);
+    }
 }
