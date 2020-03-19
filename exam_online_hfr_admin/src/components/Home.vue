@@ -26,7 +26,14 @@
           <el-menu-item index="/system/user">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>用户管理</span>
+              <span>后台用户</span>
+            </template>
+          </el-menu-item>
+
+          <el-menu-item index="/system/user_q">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>考试用户</span>
             </template>
           </el-menu-item>
 

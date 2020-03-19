@@ -4,7 +4,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>后台用户</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 卡片 -->
     <el-card body-style="padding: 5px 10px;">
@@ -19,18 +19,6 @@
           <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="4">
             <el-form-item label="真实姓名">
               <el-input v-model="queryInfo.userRealname"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="4">
-            <el-form-item label="所属班级">
-              <el-select v-model="queryInfo.fkUserGradeId" placeholder="- 请选择 -">
-                <el-option
-                  v-for="item in queryInfo.grade"
-                  :key="item.gradeId"
-                  :label="item.gradeName"
-                  :value="item.gradeId"
-                ></el-option>
-              </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="8" :md="6" :lg="6" :xl="4">
@@ -56,7 +44,7 @@
           type="primary"
           @click="addBefore"
           size="mini"
-        >添加用户</el-button>
+        >添加后台用户</el-button>
       </el-row>
       <!-- 表格 -->
       <el-table :data="tableData" stripe border style="text-align: center">
@@ -65,9 +53,6 @@
         <el-table-column prop="userRealname" label="真实姓名"></el-table-column>
         <el-table-column label="注册时间">
           <template v-slot:default="scope">{{scope.row.userAddtime | dateFormat}}</template>
-        </el-table-column>
-        <el-table-column label="所属班级">
-          <template v-slot:default="scope">{{scope.row.fkGrade.gradeName}}</template>
         </el-table-column>
         <el-table-column label="所属角色">
           <template v-slot:default="scope">
@@ -135,18 +120,6 @@
           </el-form-item>
         </el-row>
         <el-row>
-          <el-form-item label="所属班级" prop="fkUserGradeId">
-            <el-select v-model="addUserForm.fkUserGradeId" placeholder="- 请选择 -" width="100%">
-              <el-option
-                v-for="item in addUserForm.grade"
-                :key="item.gradeId"
-                :label="item.gradeName"
-                :value="item.gradeId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-row>
-        <el-row>
           <el-form-item label="所属角色" prop="fkUserRoleId">
             <el-select v-model="addUserForm.fkUserRoleId" placeholder="- 请选择 -">
               <el-option
@@ -186,18 +159,6 @@
           </el-form-item>
         </el-row>
         <el-row>
-          <el-form-item label="所属班级" prop="fkUserGradeId">
-            <el-select v-model="updateUserForm.fkUserGradeId" placeholder="- 请选择 -" width="100%">
-              <el-option
-                v-for="item in updateUserForm.grade"
-                :key="item.gradeId"
-                :label="item.gradeName"
-                :value="item.gradeId"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-row>
-        <el-row>
           <el-form-item label="所属角色" prop="fkUserRoleId">
             <el-select v-model="updateUserForm.fkUserRoleId" placeholder="- 请选择 -">
               <el-option
@@ -233,8 +194,6 @@ export default {
         rows: 5, //每页显示条数
         userAccount: "",
         userRealname: "",
-        grade: [],
-        fkUserGradeId: "",
         role: [],
         fkUserRoleId: ""
       },
@@ -243,8 +202,6 @@ export default {
         userAccount: "",
         userPassword: "",
         userRealname: "",
-        grade: [],
-        fkUserGradeId: "",
         role: [],
         fkUserRoleId: ""
       },
@@ -253,8 +210,6 @@ export default {
         userId: "",
         userAccount: "",
         userRealname: "",
-        grade: [],
-        fkUserGradeId: "",
         role: [],
         fkUserRoleId: ""
       },
@@ -272,9 +227,6 @@ export default {
           { required: true, message: "请输入真实姓名", trigger: "blur" },
           { min: 2, max: 7, message: "长度在 2 到 7 个字符", trigger: "blur" }
         ],
-        fkUserGradeId: [
-          { required: true, message: "请选择所属班级", trigger: "blur" }
-        ],
         fkUserRoleId: [
           { required: true, message: "请选择所属角色", trigger: "blur" }
         ]
@@ -287,63 +239,12 @@ export default {
   },
   //钩子函数，已加载完成
   mounted() {
-    //为搜索表单添加班级列表
-    this.getSearchGrades();
     //为搜索表单添加角色列表
     this.getSearchRoles();
     //加载表格数据
     this.getUsers();
   },
   methods: {
-    //为搜索表单添加班级列表
-    getSearchGrades() {
-      this.$http
-        .get("school/grade/findGrades")
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 200) {
-            this.queryInfo.grade = res.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
-    },
-    //为添加表单添加班级列表
-    getAddGrades() {
-      this.$http
-        .get("school/grade/findGrades")
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 200) {
-            this.addUserForm.grade = res.data;
-          }
-        })
-        .catch(error => {
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
-    },
-    //为更新表单添加班级列表
-    getUpdateGrades() {
-      this.$http
-        .get("school/grade/findGrades")
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 200) {
-            this.updateUserForm.grade = res.data;
-          }
-        })
-        .catch(error => {
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
-    },
     //为搜索表单添加角色列表
     getSearchRoles() {
       this.$http
@@ -406,7 +307,6 @@ export default {
       this.queryInfo.userName = "";
       this.queryInfo.userAccount = "";
       this.queryInfo.userRealname = "";
-      this.queryInfo.fkUserGradeId = "";
       this.queryInfo.fkUserRoleId = "";
       this.getUsers();
     },
@@ -429,7 +329,6 @@ export default {
             rows: this.queryInfo.rows,
             userAccount: this.queryInfo.userAccount,
             userRealname: this.queryInfo.userRealname,
-            fkUserGradeId: this.queryInfo.fkUserGradeId,
             fkUserRoleId: this.queryInfo.fkUserRoleId
           }
         })
@@ -457,7 +356,6 @@ export default {
             .then(response => {
               const res = response.data;
               if (res.httpCode === 201) {
-                //this.addUserForm.userName = "";
                 this.addUserDialogVisible = false;
                 this.getUsers();
                 this.$notify.success({
@@ -528,14 +426,11 @@ export default {
         .then(response => {
           const res = response.data;
           if (res.httpCode === 200) {
-            this.getUpdateGrades();
             this.getUpdateRoles();
             this.updateUserForm.userId = userId;
             this.updateUserForm.userAccount = res.data.userAccount;
             this.updateUserForm.userRealname = res.data.userRealname;
-            this.updateUserForm.fkUserGradeId = res.data.fkUserGradeId;
             this.updateUserForm.fkUserRoleId = res.data.fkUserRoleId;
-
             this.updateUserDialogVisible = true;
           }
         })
@@ -576,9 +471,7 @@ export default {
       (this.addUserForm.userAccount = ""),
         (this.addUserForm.userRealname = ""),
         (this.addUserForm.userPassword = ""),
-        (this.addUserForm.fkUserGradeId = ""),
         (this.addUserForm.fkUserRoleId = ""),
-        this.getAddGrades(),
         this.getAddRoles(),
         (this.addUserDialogVisible = true);
     }

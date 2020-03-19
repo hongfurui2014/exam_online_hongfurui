@@ -3,10 +3,8 @@ package com.itdupan.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itdupan.bean.PageResult;
-import com.itdupan.bean.ResultBean;
 import com.itdupan.feign.GradeClient;
 import com.itdupan.mapper.UserMapper;
-import com.itdupan.pojo.Grade;
 import com.itdupan.pojo.User;
 import com.itdupan.utils.CodecUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +23,6 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private GradeClient gradeClient;
 
     @Autowired
     private RoleService roleService;
@@ -75,8 +70,6 @@ public class UserService {
      */
     public User findUserById(Long id) {
         User user = userMapper.selectByPrimaryKey(id);
-        ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
-        user.setFkGrade(res.getData());
         user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
         return user;
     }
@@ -90,8 +83,6 @@ public class UserService {
         List<User> list = userMapper.selectAll();
         if(list.size() > 0){
             for (User user : list){
-                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
-                user.setFkGrade(res.getData());
                 user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
             }
         }
@@ -104,11 +95,10 @@ public class UserService {
      * @param rows
      * @param userAccount
      * @param userRealname
-     * @param fkUserGradeId
      * @param fkUserRoleId
      * @return
      */
-    public PageResult<User> findUsersByPage(Integer page, Integer rows, String userAccount, String userRealname, Integer fkUserGradeId, Integer fkUserRoleId) {
+    public PageResult<User> findUsersByPage(Integer page, Integer rows, String userAccount, String userRealname, Integer fkUserRoleId) {
 
         PageHelper.startPage(page, rows);
 
@@ -123,10 +113,6 @@ public class UserService {
             criteria.andLike("userRealname", "%" + userRealname + "%");
         }
 
-        if(fkUserGradeId != null){
-            criteria.andEqualTo("fkUserGradeId", fkUserGradeId);
-        }
-
         if(fkUserRoleId != null){
             criteria.andEqualTo("fkUserRoleId", fkUserRoleId);
         }
@@ -134,9 +120,8 @@ public class UserService {
         List<User> list = userMapper.selectByExample(example);
 
         if(!CollectionUtils.isEmpty(list)){
-            //为每个用户添加班级和角色
+            //为每个用户添加角色
             for(User u : list){
-                u.setFkGrade(gradeClient.findGradeById(u.getFkUserGradeId()).getData());
                 u.setFkRole(roleService.findRoleById(u.getFkUserRoleId()));
             }
         }
@@ -160,8 +145,6 @@ public class UserService {
         List<User> list = userMapper.selectByExample(example);
         if(list.size() > 0){
             for (User user : list){
-                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
-                user.setFkGrade(res.getData());
                 user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
             }
         }
@@ -183,8 +166,6 @@ public class UserService {
         List<User> list = userMapper.selectByExample(example);
         if(list.size() > 0){
             for (User user : list){
-                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
-                user.setFkGrade(res.getData());
                 user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
             }
         }
@@ -214,8 +195,6 @@ public class UserService {
         List<User> list = userMapper.selectByExample(example);
         if(list.size() > 0){
             for (User user : list){
-                ResultBean<Grade> res = gradeClient.findGradeById(user.getFkUserGradeId());
-                user.setFkGrade(res.getData());
                 user.setFkRole(roleService.findRoleById(user.getFkUserRoleId()));
             }
             return list.get(0);

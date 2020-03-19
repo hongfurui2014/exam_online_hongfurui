@@ -36,6 +36,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+//格式化时间
 Vue.filter('dateFormat', function (originVal) {
   const dt = new Date(originVal)
 

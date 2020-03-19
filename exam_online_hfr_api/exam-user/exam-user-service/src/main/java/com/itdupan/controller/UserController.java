@@ -98,7 +98,6 @@ public class UserController {
      * @param rows
      * @param userAccount
      * @param userRealname
-     * @param fkUserGradeId
      * @param fkUserRoleId
      * @return
      */
@@ -108,9 +107,8 @@ public class UserController {
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "userAccount", required = false) String userAccount,
             @RequestParam(value = "userRealname", required = false) String userRealname,
-            @RequestParam(value = "fkUserGradeId", required = false) Integer fkUserGradeId,
             @RequestParam(value = "fkUserRoleId", required = false) Integer fkUserRoleId) {
-        PageResult<User> usersByPage = userService.findUsersByPage(page, rows, userAccount, userRealname, fkUserGradeId, fkUserRoleId);
+        PageResult<User> usersByPage = userService.findUsersByPage(page, rows, userAccount, userRealname, fkUserRoleId);
         return new ResultBean(200, "查询成功！", usersByPage);
     }
 

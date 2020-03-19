@@ -53,8 +53,6 @@ public class LoginFilter extends ZuulFilter {
 
         String url = request.getRequestURL().toString();
 
-        System.out.println(url);
-
         for (String allowPath: allowPaths){
             if(StringUtils.contains(url, allowPath)){
                 return false;   //在白名单中的路径放行

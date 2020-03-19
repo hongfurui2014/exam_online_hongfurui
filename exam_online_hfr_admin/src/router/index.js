@@ -41,8 +41,14 @@ router.beforeEach((to, from, next) => {
   // from 代表从哪个路径跳转而来
   // next 是一个函数，表示放行
   // next()  放行 next('/login')  强制跳转
-  if (to.path === '/login') return next();
   const token_cookie = getCookie('HFR_TOKEN');
+  if (to.path === '/login') {
+    if(token_cookie){
+      return next('/admin');
+    }else{
+      return next();
+    }
+  }
   if (!token_cookie) return next('/login');
   next();
 })
