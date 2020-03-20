@@ -73,7 +73,7 @@ public class UserQService {
     public UserQ findUserQById(Long id) {
         UserQ userQ = userQMapper.selectByPrimaryKey(id);
         ResultBean<Grade> res = gradeClient.findGradeById(userQ.getFkUserQGradeId());
-        userQ.setFkGrade(res.getData());
+        userQ.setFkGradeQ(res.getData());
         return userQ;
     }
 
@@ -87,7 +87,7 @@ public class UserQService {
         if(list.size() > 0){
             for (UserQ userQ : list){
                 ResultBean<Grade> res = gradeClient.findGradeById(userQ.getFkUserQGradeId());
-                userQ.setFkGrade(res.getData());
+                userQ.setFkGradeQ(res.getData());
             }
         }
         return list;
@@ -124,9 +124,9 @@ public class UserQService {
         List<UserQ> list = userQMapper.selectByExample(example);
 
         if(!CollectionUtils.isEmpty(list)){
-            //为每个用户添加班级和角色
+            //为每个用户添加班级
             for(UserQ u : list){
-                u.setFkGrade(gradeClient.findGradeById(u.getFkUserQGradeId()).getData());
+                u.setFkGradeQ(gradeClient.findGradeById(u.getFkUserQGradeId()).getData());
             }
         }
 
@@ -150,7 +150,7 @@ public class UserQService {
         if(list.size() > 0){
             for (UserQ userQ : list){
                 ResultBean<Grade> res = gradeClient.findGradeById(userQ.getFkUserQGradeId());
-                userQ.setFkGrade(res.getData());
+                userQ.setFkGradeQ(res.getData());
             }
         }
         return list;
@@ -172,7 +172,7 @@ public class UserQService {
         if(list.size() > 0){
             for (UserQ userQ : list){
                 ResultBean<Grade> res = gradeClient.findGradeById(userQ.getFkUserQGradeId());
-                userQ.setFkGrade(res.getData());
+                userQ.setFkGradeQ(res.getData());
             }
         }
         return list;
@@ -202,7 +202,7 @@ public class UserQService {
         if(list.size() > 0){
             for (UserQ userQ : list){
                 ResultBean<Grade> res = gradeClient.findGradeById(userQ.getFkUserQGradeId());
-                userQ.setFkGrade(res.getData());
+                userQ.setFkGradeQ(res.getData());
             }
             return list.get(0);
         }

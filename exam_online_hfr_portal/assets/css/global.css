@@ -1,0 +1,22 @@
+html, body{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    background-color: #eee;
+}
+.el-table th{
+    color:#444;
+    font-weight: bolder;
+    font-size: 14px;
+}
+
+.el-table td, .el-table th{
+    text-align: center !important;
+}
+
+.el-pagination{
+    margin-top: 20px;;
+    display: flex;
+    justify-content: center;
+}

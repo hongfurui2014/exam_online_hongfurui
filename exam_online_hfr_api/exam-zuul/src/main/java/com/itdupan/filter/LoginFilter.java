@@ -43,23 +43,25 @@ public class LoginFilter extends ZuulFilter {
     @Override
     public boolean shouldFilter() {
 
-        //获取白名单
-        List<String> allowPaths = filterProperties.getAllowPaths();
+//        //获取白名单
+//        List<String> allowPaths = filterProperties.getAllowPaths();
+//
+//        //初始化zull运行上下文
+//        RequestContext context = RequestContext.getCurrentContext();
+//
+//        HttpServletRequest request = context.getRequest();
+//
+//        String url = request.getRequestURL().toString();
+//
+//        for (String allowPath: allowPaths){
+//            if(StringUtils.contains(url, allowPath)){
+//                return false;   //在白名单中的路径放行
+//            }
+//        }
+//
+//        return true;
 
-        //初始化zull运行上下文
-        RequestContext context = RequestContext.getCurrentContext();
-
-        HttpServletRequest request = context.getRequest();
-
-        String url = request.getRequestURL().toString();
-
-        for (String allowPath: allowPaths){
-            if(StringUtils.contains(url, allowPath)){
-                return false;   //在白名单中的路径放行
-            }
-        }
-
-        return true;
+        return false;
     }
 
     @Override
@@ -70,21 +72,20 @@ public class LoginFilter extends ZuulFilter {
 
         HttpServletRequest request = context.getRequest();
 
-        String token = CookieUtils.getCookieValue(request, jwtProperties.getCookieName());
-
-        if(StringUtils.isEmpty(token)){ //拦截请求
-            context.setSendZuulResponse(false);
-            context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        }
-
-        try {
-            JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
-        }catch (Exception e){
-            //e.printStackTrace();
-            //拦截请求
-            context.setSendZuulResponse(false);
-            context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        }
+//        String token = CookieUtils.getCookieValue(request, jwtProperties.getCookieName());
+//
+//        if(StringUtils.isEmpty(token)){ //拦截请求
+//            context.setSendZuulResponse(false);
+//            context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+//        }
+//
+//        try {
+//            JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+//        }catch (Exception e){
+//            //拦截请求
+//            context.setSendZuulResponse(false);
+//            context.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+//        }
 
         return null;
     }

@@ -30,19 +30,19 @@ public class UserQ {
     private Long fkUserQGradeId;
 
     @Transient
-    private Grade fkGrade;
+    private Grade fkGradeQ;
 
     public UserQ() {
     }
 
-    public UserQ(@Length(min = 3, max = 16, message = "登录账户长度在 3 到 16 个字符") String userQAccount, @Length(min = 2, max = 7, message = "真实姓名长度在 2 到 7 个字符") String userQRealname, @Length(min = 5, max = 20, message = "账户密码长度在 5 到 20 个字符") String userQPassword, String userQSalt, Date userQAddtime, Long fkUserQGradeId, Grade fkGrade) {
+    public UserQ(@Length(min = 3, max = 16, message = "登录账户长度在 3 到 16 个字符") String userQAccount, @Length(min = 2, max = 7, message = "真实姓名长度在 2 到 7 个字符") String userQRealname, @Length(min = 5, max = 20, message = "账户密码长度在 5 到 20 个字符") String userQPassword, String userQSalt, Date userQAddtime, Long fkUserQGradeId, Grade fkGradeQ) {
         this.userQAccount = userQAccount;
         this.userQRealname = userQRealname;
         this.userQPassword = userQPassword;
         this.userQSalt = userQSalt;
         this.userQAddtime = userQAddtime;
         this.fkUserQGradeId = fkUserQGradeId;
-        this.fkGrade = fkGrade;
+        this.fkGradeQ = fkGradeQ;
     }
 
     public Long getUserQId() {
@@ -101,12 +101,12 @@ public class UserQ {
         this.fkUserQGradeId = fkUserQGradeId;
     }
 
-    public Grade getFkGrade() {
-        return fkGrade;
+    public Grade getFkGradeQ() {
+        return fkGradeQ;
     }
 
-    public void setFkGrade(Grade fkGrade) {
-        this.fkGrade = fkGrade;
+    public void setFkGradeQ(Grade fkGradeQ) {
+        this.fkGradeQ = fkGradeQ;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class UserQ {
                 ", userQSalt='" + userQSalt + '\'' +
                 ", userQAddtime=" + userQAddtime +
                 ", fkUserQGradeId=" + fkUserQGradeId +
-                ", fkGrade=" + fkGrade +
+                ", fkGradeQ=" + fkGradeQ +
                 '}';
     }
 }

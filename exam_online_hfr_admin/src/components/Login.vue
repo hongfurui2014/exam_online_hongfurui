@@ -15,7 +15,7 @@
         size="mini"
         ref="loginFormRef"
       >
-        <div style="padding: 15px 9px 10px 39px; color: #666;font-size: 12px;">在线考试系统 - 后台管理登录</div>
+        <div style="padding: 10px;text-align: center; color: #666;font-size: 12px;">在线考试系统 - 后台管理登录</div>
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="用户名"></el-input>
@@ -33,7 +33,7 @@
 
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login" style="width: 100%;">登录</el-button>
+          <el-button type="primary" @click="login" style="width: 100%;">立 即 登 录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "maxin",
+        username: "hulin",
         password: "2866908123wwe"
       },
 

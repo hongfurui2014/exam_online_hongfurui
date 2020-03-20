@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/Welcome'
 import User from '../components/system/User'
+import UserQ from '../components/system/UserQ'
 import Role from '../components/system/Role'
 import Grade from '../components/school/Grade'
 import Subject from '../components/school/Subject'
@@ -21,6 +22,7 @@ const router = new Router({
       children: [
         { path: '/admin', component: Welcome },
         { path: '/system/user', component: User },
+        { path: '/system/userQ', component: UserQ },
         { path: '/system/role', component: Role },
         { path: '/school/grade', component: Grade },
         { path: '/school/subject', component: Subject },

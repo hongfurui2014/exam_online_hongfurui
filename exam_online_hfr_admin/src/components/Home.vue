@@ -30,7 +30,7 @@
             </template>
           </el-menu-item>
 
-          <el-menu-item index="/system/user_q">
+          <el-menu-item index="/system/userQ">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>考试用户</span>
@@ -40,10 +40,9 @@
           <el-menu-item index="/system/role">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>角色管理</span>
+              <span>角色权限</span>
             </template>
           </el-menu-item>
-
         </el-submenu>
 
         <el-submenu index="3">
@@ -119,7 +118,7 @@
 
         <el-dropdown>
           <span class="el-dropdown-link">
-            洪福锐
+            {{user.userRealname}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -140,13 +139,32 @@
 export default {
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
+      user: {
+        userId: "",
+        userRealname: ""
+      }
     };
   },
   methods: {
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;
+    },
+    //获取已登录用户的信息
+    getLoginUserInfo() {
+      this.$http
+        .get("auth/auth/verify")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            this.user = res.data;
+          }
+        })
+        .catch(error => {});
     }
+  },
+  mounted() {
+    this.getLoginUserInfo();
   }
 };
 </script>
