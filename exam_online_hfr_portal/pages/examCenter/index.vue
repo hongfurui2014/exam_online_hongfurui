@@ -3,39 +3,39 @@
     <el-card class="box-card">
       <el-table :data="tableData" stripe size="mini">
         <el-table-column prop="testName" label="考试名称"></el-table-column>
-        <el-table-column label="考试时间">
-          <template v-slot:default="scope">{{scope.row.testBeforetime}} ~ {{scope.row.testAftertime}}</template>
+        <el-table-column label="考试时间" width="275px;">
+          <template
+            v-slot:default="scope"
+          >{{scope.row.testBeforetime}} ~ {{scope.row.testAftertime}}</template>
         </el-table-column>
-        <el-table-column prop="testTimesum" label="考试时长(分钟)" width="120px;">
-          
+        <el-table-column prop="testTimesum" label="考试时长(分钟)" width="115px;"></el-table-column>
+        <el-table-column prop="testTopicsum" label="题量" width="50px;"></el-table-column>
+        <el-table-column prop="testScores" label="卷面总分" width="80px;"></el-table-column>
+        <el-table-column prop="testPass" label="及格分数" width="80px;"></el-table-column>
+        <el-table-column label="所属班级" width="120px;">
+          <template v-slot:default="scope">{{scope.row.fkGrade.gradeName }}</template>
         </el-table-column>
-        <el-table-column prop="testTopicsum" label="题量" width="50px;">
-          
-        </el-table-column>
-        <el-table-column prop="testScores" label="卷面总分" width="80px;">
-          
-        </el-table-column>
-        <el-table-column prop="testPass" label="及格分数" width="80px;">
-          
-        </el-table-column>
-        <el-table-column label="所属科目" width="140px;">
+        <el-table-column label="所属科目" width="120px;">
           <template v-slot:default="scope">{{scope.row.fkSubject.subjectName }}</template>
         </el-table-column>
 
-        <el-table-column label="操作" width="130px;">
+        <el-table-column label="操作" width="100px;">
           <template v-slot:default="scope">
             <el-button
-              @click="updateTopic(scope.row.topicId)"
-              icon="el-icon-edit"
-              type="text"
+              v-if="scope.row.testState == 0"
               size="mini"
-            >修改</el-button>
+              type="warning"
+              disabled
+              round
+            >暂未开始</el-button>
             <el-button
-              icon="el-icon-delete"
-              @click="deleteTopic(scope.row.topicId)"
-              type="text"
+              v-if="scope.row.testState == 1"
               size="mini"
-            >删除</el-button>
+              @click="startTest(scope.row.testId)"
+              type="success"
+              round
+            ><nuxt-link :to="{name: 'test-id', params: {id: scope.row.testId}}" style="text-decoration: none;color:#666;">开始考试</nuxt-link></el-button>
+            <el-button v-if="scope.row.testState == 2" size="mini" disabled type="info" round>考试结束</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -67,10 +67,12 @@ export default {
         page: 1, //当前页数
         rows: 5, //每页显示条数
         grade: [],
-        fkTestGradeId: "",
-        subject: [],
-        fkTestSubjectId: ""
+        fkTestGradeId: ""
       },
+      user: {
+        userId: "",
+        userRealname: ""
+      }
     };
   },
   //钩子函数，已加载完成
@@ -78,8 +80,8 @@ export default {
     //加载表格数据
     this.getTests();
   },
-  methods:{
-      //每页显示多少条改变
+  methods: {
+    //每页显示多少条改变
     handleSizeChange(newRows) {
       this.queryInfo.rows = newRows;
       this.getTests();
@@ -90,14 +92,22 @@ export default {
       this.getTests();
     },
     //分页获取表格数据
-    getTests() {
+    async getTests() {
+      const res =  await this.$http.get("auth/auth/verifyQ")
+      this.user = res.data.data
+
+      const res2 = await this.$http.get("user/userQ/findUserQById", {
+        params:{
+          userQId: this.user.userId
+        }
+      })
+
       this.$http
         .get("test/test/findTestsByPage", {
           params: {
             page: this.queryInfo.page,
             rows: this.queryInfo.rows,
-            fkTestGradeId: this.queryInfo.fkTestGradeId,
-            fkTestSubjectId: this.queryInfo.fkTestSubjectId
+            fkTestGradeId: res2.data.data.fkUserQGradeId
           }
         })
         .then(response => {
@@ -113,7 +123,7 @@ export default {
             title: error.response.data.message
           });
         });
-    },
+    }
   }
 };
 </script>

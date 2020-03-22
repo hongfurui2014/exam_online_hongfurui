@@ -52,6 +52,7 @@ public class Test {
 
     private Subject fkSubject;
 
+    @Transient
     private Integer testState;   //试卷状态，0待考 1正在考试中 2已考
 
     public Test() {

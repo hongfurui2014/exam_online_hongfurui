@@ -7,7 +7,7 @@
         @select="handleSelect"
         class="container"
       >
-        <el-menu-item>
+        <el-menu-item index="dfgsdfgfd">
           <img src="@/static/itpanlogo.png" style="height:50px; width:50px" alt="在线考试系统" />
         </el-menu-item>
         <el-menu-item index="/">
@@ -22,11 +22,12 @@
         <el-menu-item index="/login" style="float:right;" v-if="$store.state.isLogin == false">
           <nuxt-link to="/login" class="text-none">登录/注册</nuxt-link>
         </el-menu-item>
-        <el-menu-item style="float:right;" v-if="$store.state.isLogin == true">
+        <el-menu-item style="float:right;" index="dfthfghdfgdf" v-if="$store.state.isLogin == true">
           <nuxt-link to="/login" class="text-none">退出登录</nuxt-link>
         </el-menu-item>
         <el-menu-item
           style="float:right;"
+           index="fghfgdfgdgdfg"
           v-if="$store.state.isLogin == true"
         >您好：{{$store.state.user.userRealname}}</el-menu-item>
       </el-menu>
@@ -50,11 +51,7 @@ Vue.prototype.$http = axios;
 export default {
   data() {
     return {
-      activeIndex: "/",
-      user: {
-        userId: "",
-        userRealname: ""
-      }
+      activeIndex: "/"
     };
   },
   methods: {
@@ -70,7 +67,9 @@ export default {
             this.$store.commit("setIsLogin", true);
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          this.$router.push("/login"); //转到登录页
+        });
     }
   },
   mounted() {

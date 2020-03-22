@@ -99,7 +99,6 @@ public class AuthController {
             //System.out.println(user);
             return new ResultBean<UserInfo>(200, "认证成功！",userInfo);
         }catch (Exception e){
-            e.printStackTrace();
         }
         return new ResultBean<UserInfo>(401, "身份未认证！",null);
     }
@@ -114,7 +113,6 @@ public class AuthController {
             HttpServletRequest request,
             HttpServletResponse response,
             @CookieValue("HFR_Q_TOKEN") String token){
-
         try {
             UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
 
@@ -131,7 +129,6 @@ public class AuthController {
             //System.out.println(user);
             return new ResultBean<UserInfo>(200, "认证成功！",userInfo);
         }catch (Exception e){
-            e.printStackTrace();
         }
         return new ResultBean<UserInfo>(401, "身份未认证！",null);
     }

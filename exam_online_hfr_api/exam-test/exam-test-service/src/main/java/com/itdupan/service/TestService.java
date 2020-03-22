@@ -126,20 +126,20 @@ public class TestService {
                     onediffList.add(t);
                 }
 
-                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 0 && t.getTopicLevel() == 0){
+                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 1 && t.getTopicLevel() == 0){
                     moresimpleList.add(t);
                 }
                 if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 1 && t.getTopicLevel() == 1){
                     moremiddleList.add(t);
                 }
-                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 2 && t.getTopicLevel() == 2){
+                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 1 && t.getTopicLevel() == 2){
                     morediffList.add(t);
                 }
 
-                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 0 && t.getTopicLevel() == 0){
+                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 2 && t.getTopicLevel() == 0){
                     judgesimpleList.add(t);
                 }
-                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 1 && t.getTopicLevel() == 1){
+                if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 2 && t.getTopicLevel() == 1){
                     judgemiddleList.add(t);
                 }
                 if(t.getFkSubject().getSubjectId() == test.getFkTestSubjectId() && t.getTopicType() == 2 && t.getTopicLevel() == 2){

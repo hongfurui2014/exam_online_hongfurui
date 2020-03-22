@@ -48,5 +48,12 @@ public class TestTopic {
         this.fkTopicId = fkTopicId;
     }
 
-
+    @Override
+    public String toString() {
+        return "TestTopic{" +
+                "testTopicId=" + testTopicId +
+                ", fkTestId=" + fkTestId +
+                ", fkTopicId=" + fkTopicId +
+                '}';
+    }
 }

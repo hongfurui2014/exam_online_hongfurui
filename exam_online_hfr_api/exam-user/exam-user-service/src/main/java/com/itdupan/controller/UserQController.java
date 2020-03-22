@@ -86,7 +86,7 @@ public class UserQController {
      *
      * @return
      */
-    @GetMapping("findUserQs")
+    @GetMapping("findUsersQ")
     public ResultBean<List<UserQ>> findUserQs() {
         List<UserQ> list = userQService.findAll();
         return new ResultBean(200, "查询成功！", list);
