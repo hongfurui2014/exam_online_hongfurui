@@ -1,7 +1,9 @@
 package com.itdupan.service;
 
+import Com.itdupan.pojo.Test;
 import Com.itdupan.pojo.TestTopic;
 import Com.itdupan.pojo.Topic;
+import com.itdupan.feign.UserQClient;
 import com.itdupan.mapper.TestTopicMapper;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +25,12 @@ public class TestTopicService {
 
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private UserQClient userQClient;
+
+    @Autowired
+    private TestService testService;
 
     /**
      * 添加
@@ -37,7 +46,17 @@ public class TestTopicService {
      * @param testId
      * @return
      */
-    public List<Topic> findTopicsByTestId(Long testId) {
+    public List<List<Topic>> findTopicsByTestId(Long testId, Long userId) {
+
+        //查询test的gradeId和user的gradeId是否相同，不同则不能考试
+        Long grade1 = testService.findTestById(testId).getFkTestGradeId();
+
+        Long grade2 = userQClient.findUserQById(userId).getData().getFkUserQGradeId();
+
+        if(grade1 != grade2){
+            return null;
+        }
+
         Example example = new Example(TestTopic.class);
 
         Example.Criteria criteria = example.createCriteria();
@@ -53,27 +72,41 @@ public class TestTopicService {
             topicList.add(t);
         }
 
-        //topicList.sort(new TopicSortByType());
+        topicList.sort(new TopicSortCompator());
 
-        //topicList.sort(new TopicSortByLevel());
-
+        //正确答案清空
         for(Topic t:topicList){
-            System.out.println(t.getTopicId() + "- - " + t.getTopicType() + " - " + t.getTopicLevel());
+            t.setTopicYesanswer("");
         }
 
-        return topicList;
+        List<List<Topic>> topics = new ArrayList<>();
+
+        List<Topic> simples = new ArrayList<>();
+        List<Topic> mores = new ArrayList<>();
+        List<Topic> diffs = new ArrayList<>();
+
+        for(Topic t: topicList){
+            if(t.getTopicType() == 0){
+                simples.add(t);
+            }
+            if(t.getTopicType() == 1){
+                mores.add(t);
+            }
+            if(t.getTopicType() == 2){
+                diffs.add(t);
+            }
+        }
+
+        //简单 中等 高难题分别归类存放
+        topics.add(simples);
+        topics.add(mores);
+        topics.add(diffs);
+
+        return topics;
     }
 }
 
-class TopicSortByType implements Comparator<Topic>{
-
-    @Override
-    public int compare(Topic o1, Topic o2) {
-        return o1.getTopicType() - o2.getTopicType();
-    }
-}
-
-class TopicSortByLevel implements Comparator<Topic>{
+class TopicSortCompator implements Comparator<Topic>{
 
     @Override
     public int compare(Topic o1, Topic o2) {

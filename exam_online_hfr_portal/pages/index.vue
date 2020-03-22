@@ -1,12 +1,6 @@
 <template>
   <div>
     <p>首页</p>
-    <p>首页</p>
-    <p>首页</p>
-    <p>首页</p>
-    <p>首页</p>
-    <p>首页</p>
-    <p>首页</p>
   </div>
 </template>
 

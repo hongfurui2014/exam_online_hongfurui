@@ -19,13 +19,16 @@ public class TestTopicController {
     private TestTopicService testTopicService;
 
     /**
-     * 根据试卷id查询出该试卷下的所有试题，且按试题类型和难易程度排序
+     * 根据试卷id和用户id查询出该试卷下的所有试题，且按试题类型和难易程度排序
      * @param testId
      * @return
      */
     @GetMapping("findTopicsByTestId")
-    public ResultBean<List<Topic>> findTopicsByTestId(@RequestParam("testId") Long testId){
-        List<Topic> list = testTopicService.findTopicsByTestId(testId);
+    public ResultBean<List<List<Topic>>> findTopicsByTestId(@RequestParam("testId") Long testId, @RequestParam("userId") Long userId){
+        List<List<Topic>> list = testTopicService.findTopicsByTestId(testId, userId);
+        if(list == null){
+            return new ResultBean<>(600, "抱歉，您暂没有权限参加该考试！", null);
+        }
         return new ResultBean<>(200, "查询成功！", list);
     }
 }

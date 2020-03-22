@@ -15,4 +15,13 @@ public interface UserQApi {
      */
     @GetMapping("userQ/loginQ")
     public ResultBean<UserQ> loginQ(@RequestParam("userQname") String userQname, @RequestParam("password") String password);
+
+    /**
+     * 通过id查询
+     *
+     * @param userQId
+     * @return
+     */
+    @GetMapping("userQ/findUserQById")
+    public ResultBean<UserQ> findUserQById(@RequestParam("userQId") Long userQId);
 }
