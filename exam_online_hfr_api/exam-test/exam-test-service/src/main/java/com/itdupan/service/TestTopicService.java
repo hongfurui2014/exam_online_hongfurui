@@ -46,12 +46,12 @@ public class TestTopicService {
      * @param testId
      * @return
      */
-    public List<List<Topic>> findTopicsByTestId(Long testId, Long userId) {
+    public List<List<Topic>> findTopicsByTestIdAndUserQId(Long testId, Long userQId) {
 
         //查询test的gradeId和user的gradeId是否相同，不同则不能考试
         Long grade1 = testService.findTestById(testId).getFkTestGradeId();
 
-        Long grade2 = userQClient.findUserQById(userId).getData().getFkUserQGradeId();
+        Long grade2 = userQClient.findUserQById(userQId).getData().getFkUserQGradeId();
 
         if(grade1 != grade2){
             return null;

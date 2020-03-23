@@ -34,8 +34,9 @@
               @click="startTest(scope.row.testId)"
               type="success"
               round
-            ><nuxt-link :to="{name: 'test-id', params: {id: scope.row.testId}}" style="text-decoration: none;color:#666;">开始考试</nuxt-link></el-button>
+            ><nuxt-link :to="{name: 'test-id', params: {id: scope.row.testId}}" style="text-decoration: none;color:#666;">进入考试</nuxt-link></el-button>
             <el-button v-if="scope.row.testState == 2" size="mini" disabled type="info" round>考试结束</el-button>
+            <el-button v-if="scope.row.testState == 3" size="mini" disabled type="primary" round>答卷完毕</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -103,11 +104,12 @@ export default {
       })
 
       this.$http
-        .get("test/test/findTestsByPage", {
+        .get("test/test/findTestsByPageByGradeIdAndUserQId", {
           params: {
             page: this.queryInfo.page,
             rows: this.queryInfo.rows,
-            fkTestGradeId: res2.data.data.fkUserQGradeId
+            fkTestGradeId: res2.data.data.fkUserQGradeId,
+            userQId: this.user.userId
           }
         })
         .then(response => {

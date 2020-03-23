@@ -23,9 +23,9 @@ public class TestTopicController {
      * @param testId
      * @return
      */
-    @GetMapping("findTopicsByTestId")
-    public ResultBean<List<List<Topic>>> findTopicsByTestId(@RequestParam("testId") Long testId, @RequestParam("userId") Long userId){
-        List<List<Topic>> list = testTopicService.findTopicsByTestId(testId, userId);
+    @GetMapping("findTopicsByTestIdAndUserQId")
+    public ResultBean<List<List<Topic>>> findTopicsByTestIdAndUserQId(@RequestParam("testId") Long testId, @RequestParam("userQId") Long userQId){
+        List<List<Topic>> list = testTopicService.findTopicsByTestIdAndUserQId(testId, userQId);
         if(list == null){
             return new ResultBean<>(600, "抱歉，您暂没有权限参加该考试！", null);
         }

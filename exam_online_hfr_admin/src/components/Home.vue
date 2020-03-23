@@ -65,7 +65,7 @@
             </template>
           </el-menu-item>
 
-          <el-menu-item index="3-3">
+          <el-menu-item index="/test/Statistics">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>考试统计</span>

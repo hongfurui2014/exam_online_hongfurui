@@ -99,4 +99,22 @@ public class TestController {
         PageResult<Test> testsByPage = testService.findTestsByPage(page, rows, fkTestGradeId, fkTestSubjectId);
         return new ResultBean(200, "查询成功！", testsByPage);
     }
+
+    /**
+     * 考生查看考试中心时，查出该考试能参加的考试
+     * @param page
+     * @param rows
+     * @param fkTestGradeId
+     * @param userQId
+     * @return
+     */
+    @GetMapping("findTestsByPageByGradeIdAndUserQId")
+    public ResultBean<PageResult<Test>> findTestsByPage1(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", defaultValue = "5") Integer rows,
+            @RequestParam("fkTestGradeId") Long fkTestGradeId,
+            @RequestParam("userQId") Long userQId){
+        PageResult<Test> testsByPage = testService.findTestsByPageByGradeIdAndUserQId(page, rows, fkTestGradeId, userQId);
+        return new ResultBean(200, "查询成功！", testsByPage);
+    }
 }

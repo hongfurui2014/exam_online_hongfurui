@@ -2,6 +2,7 @@ package com.itdupan.service;
 
 import Com.itdupan.pojo.Test;
 import Com.itdupan.pojo.TestTopic;
+import Com.itdupan.pojo.TestUserQ;
 import Com.itdupan.pojo.Topic;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -52,6 +53,9 @@ public class TestService {
 
     @Autowired
     private TestTopicMapper testTopicMapper;
+
+    @Autowired
+    private TestUserQService testUserQService;
 
     /**
      * 抽组试题生成试卷
@@ -377,11 +381,11 @@ public class TestService {
                 t.setFkGrade(gradeClient.findGradeById(t.getFkTestGradeId()).getData());
 
                 if(new Date().before(t.getTestBeforetime())){
-                    t.setTestState(0);
+                    t.setTestState(0); //已考
                 }else if((new Date().after(t.getTestBeforetime())) && (new Date().before(t.getTestAftertime()))){
-                    t.setTestState(1);
+                    t.setTestState(1); //正在考试中
                 }else{
-                    t.setTestState(2);
+                    t.setTestState(2); //考试结束
                 }
 
             }
@@ -392,4 +396,52 @@ public class TestService {
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getList());
     }
 
+
+    /**
+     * 考生查看考试中心时，查出该考试能参加的考试
+     * @param page
+     * @param rows
+     * @param fkTestGradeId
+     * @param userQId
+     * @return
+     */
+    public PageResult<Test> findTestsByPageByGradeIdAndUserQId(Integer page, Integer rows, Long fkTestGradeId, Long userQId) {
+        PageHelper.startPage(page, rows);
+
+        Example example = new Example(Test.class);
+
+        Example.Criteria criteria = example.createCriteria();
+
+        if(fkTestGradeId != null){
+            criteria.andEqualTo("fkTestGradeId", fkTestGradeId);
+        }
+
+
+        List<Test> list = testMapper.selectByExample(example);
+
+        if(!CollectionUtils.isEmpty(list)){
+            for(Test t : list){
+                t.setFkSubject(subjectClient.findSubjectById(t.getFkTestSubjectId()).getData());
+                t.setFkGrade(gradeClient.findGradeById(t.getFkTestGradeId()).getData());
+
+                if(new Date().before(t.getTestBeforetime())){
+                    t.setTestState(0); //已考
+                }else if((new Date().after(t.getTestBeforetime())) && (new Date().before(t.getTestAftertime()))){ //正在考试中，看看该用户有没有参加该考试
+                    TestUserQ testUserQ = testUserQService.findTestUserQByTestIdAndUserQId(t.getTestId(), userQId);
+                    if(testUserQ != null && testUserQ.getTestUserQLasttime() <= 0){
+                        t.setTestState(3);  //该用户已参加完该场考试
+                    }else{
+                        t.setTestState(1);
+                    }
+                }else{
+                    t.setTestState(2); //考试结束
+                }
+
+            }
+        }
+
+        PageInfo<Test> pageInfo = new PageInfo<>(list);
+
+        return new PageResult<>(pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getList());
+    }
 }

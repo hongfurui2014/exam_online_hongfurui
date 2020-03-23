@@ -17,5 +17,11 @@
     "less-loader": "^5.0.0",
     "nuxt": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "config":{
+    "nuxt":{
+      "host": "127.0.0.1",
+      "port": "9999"
+    }
+  }
 }
