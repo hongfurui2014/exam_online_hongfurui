@@ -1,6 +1,10 @@
 package com.itdupan.service;
 
 import Com.itdupan.pojo.TestUserQ;
+import Com.itdupan.pojo.Topic;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.itdupan.bean.PageResult;
 import com.itdupan.feign.UserQClient;
 import com.itdupan.mapper.TestUserQMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -91,18 +95,54 @@ public class TestUserQService {
     }
 
     /**
-     * 查询所有学生考试结果
+     * 分页查询所有学生考试结果
+     * @param page
+     * @param rows
+     * @param fkTestGradeId
+     * @param fkTopicSubjectId
      * @return
      */
-    public List<TestUserQ> findTestUserQs() {
+    public PageResult<TestUserQ> findTestUserQsByPage(Integer page, Integer rows, Long fkTestGradeId, Long fkTopicSubjectId) {
+        PageHelper.startPage(page, rows);
+
         Example example = new Example(TestUserQ.class);
+
+        Example.Criteria criteria = example.createCriteria();
+
+        criteria.andLessThanOrEqualTo("testUserQLasttime", 0);
 
         List<TestUserQ> list = testUserQMapper.selectByExample(example);
 
         for(TestUserQ t : list){
             t.setFkTest(testService.findTestById(t.getFkTestId()));
+            t.setFkUserQ(userQClient.findUserQById(t.getFkUserQId()).getData());
         }
 
-        return list;
+        List<TestUserQ> list1 = new ArrayList<>();
+
+        for(TestUserQ t : list){
+
+            if(fkTestGradeId != null && fkTopicSubjectId == null){
+                if(t.getFkTest().getFkTestGradeId() == fkTestGradeId){
+                    list1.add(t);
+                }
+            }else if(fkTestGradeId == null && fkTopicSubjectId != null){
+                if(t.getFkTest().getFkTestSubjectId() == fkTopicSubjectId){
+                    list1.add(t);
+                }
+            }else if(fkTestGradeId != null && fkTopicSubjectId != null){
+                if(t.getFkTest().getFkTestGradeId() == fkTestGradeId && t.getFkTest().getFkTestSubjectId() == fkTopicSubjectId){
+                    list1.add(t);
+                }
+            }else{
+                list1.add(t);
+            }
+
+        }
+
+        PageInfo<TestUserQ> pageInfo = new PageInfo<>(list1);
+
+        return new PageResult<>(pageInfo.getTotal(), pageInfo.getPages(), pageInfo.getList());
     }
+
 }

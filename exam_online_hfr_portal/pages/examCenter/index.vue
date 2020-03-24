@@ -31,7 +31,6 @@
             <el-button
               v-if="scope.row.testState == 1"
               size="mini"
-              @click="startTest(scope.row.testId)"
               type="success"
               round
             ><nuxt-link :to="{name: 'test-id', params: {id: scope.row.testId}}" style="text-decoration: none;color:#666;">进入考试</nuxt-link></el-button>
@@ -132,6 +131,6 @@ export default {
 
 <style lang='less' scoped>
 .el-card {
-  margin: 20px 20px 0px 20px;
+  margin: 20px;
 }
 </style>

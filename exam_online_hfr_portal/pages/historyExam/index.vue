@@ -16,10 +16,10 @@
           <template v-slot:default="scope">
             <el-button
               type="success"
+              plain
               round
               size="mini"
-              @click="reviewTest(scope.row.fkTest.testId)"
-            >回顾试卷</el-button>
+            ><nuxt-link :to="{name: 'reviewTest-id', params: {id: scope.row.fkTest.testId}}" style="text-decoration: none;color:#666;">回顾试卷</nuxt-link></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,6 +71,6 @@ export default {
 
 <style lang='less' scoped>
 .el-card {
-  margin: 20px 20px 0px 20px;
+  margin: 20px;
 }
 </style>

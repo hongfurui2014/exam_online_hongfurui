@@ -1,14 +1,12 @@
 package com.itdupan.controller;
 
 import Com.itdupan.pojo.Topic;
+import Com.itdupan.pojo.UserQTopic;
 import Com.itdupan.pojo.vo.UserQTopicQueryVo;
 import com.itdupan.bean.ResultBean;
 import com.itdupan.service.UserQTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,17 @@ public class UserQTopicController {
 
         userQTopicService.commitTest(topics, testId, userQId);
         return new ResultBean<>(204, "更新成功", null);
+    }
+
+    /**
+     * 根据testId和userQId查询该用户答过的所有试题
+     * @param fkTestId
+     * @param fkUserQId
+     * @return
+     */
+    @GetMapping("findUserQTopicByTestIdAndUserQId")
+    public ResultBean<List<UserQTopic>> findUserQTopicByTestIdAndUserQId(@RequestParam("fkTestId") Long fkTestId, @RequestParam("fkUserQId") Long fkUserQId){
+        List<UserQTopic> list = userQTopicService.findUserQTopicByTestIdAndUserQId(fkTestId, fkUserQId);
+        return new ResultBean<>(200, "查询成功", list);
     }
 }

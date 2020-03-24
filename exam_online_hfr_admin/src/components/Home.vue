@@ -12,7 +12,7 @@
         :collapse-transition="false"
         router
       >
-        <el-menu-item index="/welcome" style="border-bottom: 1px solid #555;">
+        <el-menu-item index="/admin" style="border-bottom: 1px solid #555;">
           <i class="el-icon-s-home"></i>
           <span>后台首页</span>
         </el-menu-item>
@@ -65,7 +65,7 @@
             </template>
           </el-menu-item>
 
-          <el-menu-item index="/test/Statistics">
+          <el-menu-item index="/test/statistics">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>考试统计</span>

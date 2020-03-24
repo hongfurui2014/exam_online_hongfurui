@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>首页</p>
+    <el-card class="box-card">首页</el-card>
   </div>
 </template>
 
@@ -9,4 +9,7 @@ export default {};
 </script>
 
 <style lang='less' scoped>
+.el-card {
+  margin: 20px;
+}
 </style>

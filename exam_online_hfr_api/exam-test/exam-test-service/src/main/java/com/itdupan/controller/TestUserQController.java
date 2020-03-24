@@ -2,6 +2,7 @@ package com.itdupan.controller;
 
 import Com.itdupan.pojo.Test;
 import Com.itdupan.pojo.TestUserQ;
+import com.itdupan.bean.PageResult;
 import com.itdupan.bean.ResultBean;
 import com.itdupan.service.TestService;
 import com.itdupan.service.TestUserQService;
@@ -79,18 +80,22 @@ public class TestUserQController {
     }
 
     /**
-     * 查询所有学生考试结果
+     * 分页查询所有学生考试结果
      * @return
      */
-    @GetMapping("findTestUserQs")
-    public ResultBean<List<TestUserQ>> findTestUserQs(){
+    @GetMapping("findTestUserQsByPage")
+    public ResultBean<List<TestUserQ>> findTestUserQsByPage(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", defaultValue = "5") Integer rows,
+            @RequestParam(value = "fkTestGradeId", required = false) Long fkTestGradeId,
+            @RequestParam(value = "fkTopicSubjectId", required = false) Long fkTopicSubjectId){
 
-        List<TestUserQ> list = testUserQService.findTestUserQs();
+        PageResult<TestUserQ> pageResult = testUserQService.findTestUserQsByPage(page, rows, fkTestGradeId, fkTopicSubjectId);
 
-        if(list == null){
+        if(pageResult == null){
             return new ResultBean<>(600, "查询失败！", null);
         }
-        return new ResultBean<>(200, "查询成功！", list);
+        return new ResultBean(200, "查询成功！", pageResult);
     }
 
     /**

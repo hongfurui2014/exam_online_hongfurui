@@ -3,31 +3,26 @@
     <div class="head">
       <el-menu
         :default-active="$route.path"
-        mode="horizontal"
-        @select="handleSelect"
         class="container"
+        mode="horizontal"
+        router
       >
-        <el-menu-item index="dfgsdfgfd">
-          <img src="@/static/itpanlogo.png" style="height:50px; width:50px" alt="在线考试系统" />
+        <el-menu-item index="/logo" disabled="" id="logo">
+          <img src="@/static/itpanlogo.png" style="height:45px; width:45px" @click="toHome" alt="在线考试系统" />
         </el-menu-item>
-        <el-menu-item index="/">
-          <nuxt-link to="/">首页</nuxt-link>
-        </el-menu-item>
-        <el-menu-item index="/examCenter">
-          <nuxt-link to="/examCenter" class="text-none">考试中心</nuxt-link>
-        </el-menu-item>
-        <el-menu-item index="/historyExam">
-          <nuxt-link to="/historyExam" class="text-none">历史考试</nuxt-link>
-        </el-menu-item>
-        <el-menu-item index="/login" style="float:right;" v-if="$store.state.isLogin == false">
-          <nuxt-link to="/login" class="text-none">登录/注册</nuxt-link>
-        </el-menu-item>
-        <el-menu-item style="float:right;" index="dfthfghdfgdf" v-if="$store.state.isLogin == true">
-          <nuxt-link to="/login" class="text-none">退出登录</nuxt-link>
-        </el-menu-item>
+        <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/examCenter">考试中心</el-menu-item>
+        <el-menu-item index="/historyExam">历史考试</el-menu-item>
+        <el-menu-item index="/login" style="float:right;" v-if="$store.state.isLogin == false">登录/注册</el-menu-item>
         <el-menu-item
           style="float:right;"
-           index="fghfgdfgdgdfg"
+          index="/login"
+          v-if="$store.state.isLogin == true"
+        >退出登录</el-menu-item>
+        <el-menu-item
+          disabled
+          style="float:right; color:#666;font-weight: bold"
+          index=""
           v-if="$store.state.isLogin == true"
         >您好：{{$store.state.user.userRealname}}</el-menu-item>
       </el-menu>
@@ -35,6 +30,7 @@
     <div class="container">
       <nuxt />
     </div>
+    <div class="container footer">footer</div>
   </div>
 </template>
 
@@ -55,7 +51,9 @@ export default {
     };
   },
   methods: {
-    handleSelect(key, keyPath) {},
+    toHome() {
+      this.$router.push("/");
+    },
     //获取已登录用户的信息
     getLoginUserInfo() {
       this.$http
@@ -89,14 +87,29 @@ export default {
   max-width: 1250px;
   min-width: 1250px;
 
-  display: block;
   margin: 0 auto;
-  border-bottom: 0px #ccc solid;
 }
 
-.nuxt-link-exact-active,
-.nuxt-link-active,
-.text-none {
-  text-decoration: none;
+.main {
+  height: 100%;
+  background-color: red;
 }
+
+.footer {
+  text-align: center;
+}
+
+.el-menu-item.is-disabled{
+  opacity: 1;
+}
+
+#logo{
+  cursor: pointer;
+}
+
+// .nuxt-link-exact-active,
+// .nuxt-link-active,
+// .text-none {
+//   text-decoration: none;
+// }
 </style>

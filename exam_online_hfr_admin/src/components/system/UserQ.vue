@@ -153,7 +153,7 @@
         </el-row>
         <el-row>
           <el-form-item label="所属班级" prop="fkUserQGradeId">
-            <el-select v-model="updateUserQForm.fkUserQGradeId" placeholder="- 请选择 -" width="100%">
+            <el-select disabled v-model="updateUserQForm.fkUserQGradeId" placeholder="- 请选择 -" width="100%">
               <el-option
                 v-for="item in updateUserQForm.gradeQ"
                 :key="item.gradeId"

@@ -7,6 +7,7 @@ import com.itdupan.mapper.UserQTopicMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -55,5 +56,26 @@ public class UserQTopicService {
 
         System.out.println(tu);
         testUserQService.updateTestUserQ(tu);
+    }
+
+    public List<UserQTopic> findUserQTopicByTestIdAndUserQId(Long fkTestId, Long fkUserQId) {
+        Example example = new Example(UserQTopic.class);
+
+        Example.Criteria criteria = example.createCriteria();
+
+        if(fkTestId != null){
+            criteria.andEqualTo("fkTestId", fkTestId);
+        }
+
+        if(fkUserQId != null){
+            criteria.andEqualTo("fkUserQId", fkUserQId);
+        }
+
+        List<UserQTopic> list = userQTopicMapper.selectByExample(example);
+
+        for(UserQTopic ut : list){
+            ut.setFkTopic(topicService.findTopicById(ut.getFkTopicId()));
+        }
+        return list;
     }
 }

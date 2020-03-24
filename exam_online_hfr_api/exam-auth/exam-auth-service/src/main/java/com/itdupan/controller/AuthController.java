@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("auth")
@@ -33,7 +34,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("login")
-    public ResultBean<Void> login(
+    public ResultBean<UserInfo> login(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam("username") String username,
@@ -41,11 +42,20 @@ public class AuthController {
         String token = authService.login(username, password);
 
         if (token == null) {
-            return new ResultBean<Void>(600, "用户名或密码错误！", null);
+            return new ResultBean(600, "用户名或密码错误！", null);
         }
 
         CookieUtils.setCookie(request, response, jwtProperties.getCookieName(), token, jwtProperties.getExpire() * 60);
-        return new ResultBean<Void>(200, "登陆成功！", null);
+
+        UserInfo userInfo = null;
+        try {
+            userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+        }catch (Exception e){
+
+        }
+
+
+        return new ResultBean(200, "登陆成功！", userInfo);
     }
 
     /**
@@ -57,7 +67,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("loginQ")
-    public ResultBean<Void> loginQ(
+    public ResultBean<UserInfo> loginQ(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam("username") String username,
@@ -65,11 +75,19 @@ public class AuthController {
         String token = authService.loginQ(username, password);
 
         if (token == null) {
-            return new ResultBean<Void>(600, "用户名或密码错误！", null);
+            return new ResultBean(600, "用户名或密码错误！", null);
         }
 
         CookieUtils.setCookie(request, response, "HFR_Q_TOKEN", token, jwtProperties.getExpire() * 60);
-        return new ResultBean<Void>(200, "登陆成功！", null);
+        UserInfo userInfo = null;
+        try {
+            userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
+        }catch (Exception e){
+
+        }
+
+
+        return new ResultBean(200, "登陆成功！", userInfo);
     }
 
     /**

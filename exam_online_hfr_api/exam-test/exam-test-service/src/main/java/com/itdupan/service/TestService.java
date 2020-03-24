@@ -14,6 +14,7 @@ import com.itdupan.feign.GradeClient;
 import com.itdupan.feign.SubjectClient;
 import com.itdupan.mapper.TestMapper;
 import com.itdupan.mapper.TestTopicMapper;
+import com.itdupan.pojo.Grade;
 import com.itdupan.pojo.Subject;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -329,7 +330,9 @@ public class TestService {
     public Test findTestById(Long id) {
         Test test = testMapper.selectByPrimaryKey(id);
         ResultBean<Subject> res = subjectClient.findSubjectById(test.getFkTestSubjectId());
+        ResultBean<Grade> gradeRes = gradeClient.findGradeById(test.getFkTestGradeId());
         test.setFkSubject(res.getData());
+        test.setFkGrade(gradeRes.getData());
         return test;
     }
 
