@@ -16,6 +16,7 @@
     "less-loader": "^5.0.0",
     "nprogress": "^0.2.0",
     "vue": "^2.5.2",
+    "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

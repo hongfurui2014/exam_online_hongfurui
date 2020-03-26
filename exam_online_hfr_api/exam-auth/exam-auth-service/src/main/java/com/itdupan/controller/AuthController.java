@@ -27,6 +27,7 @@ public class AuthController {
 
     /**
      * 后台用户登录
+     *
      * @param request
      * @param response
      * @param username
@@ -50,16 +51,16 @@ public class AuthController {
         UserInfo userInfo = null;
         try {
             userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-
 
         return new ResultBean(200, "登陆成功！", userInfo);
     }
 
     /**
      * 考试用户登录
+     *
      * @param request
      * @param response
      * @param username
@@ -82,7 +83,7 @@ public class AuthController {
         UserInfo userInfo = null;
         try {
             userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -92,20 +93,20 @@ public class AuthController {
 
     /**
      * 通过cookie解析，验证用户是否已认证
-     * @param token
+     *
+     * @param
      * @return
      */
     @GetMapping("verify")
     public ResultBean<UserInfo> verify(
             HttpServletRequest request,
             HttpServletResponse response,
-            @CookieValue("HFR_TOKEN") String token){
-
+            @CookieValue("HFR_TOKEN") String token) {
         try {
             UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
 
-            if(userInfo == null){   //token解析失败，身份未认证
-                return new ResultBean<UserInfo>(401, "身份未认证！",null);
+            if (userInfo == null) {   //token解析失败，身份未认证
+                return new ResultBean<UserInfo>(401, "身份未认证！", null);
             }
 
             //解析成功刷新jwt时效，即重新生成jwt
@@ -115,14 +116,39 @@ public class AuthController {
             CookieUtils.setCookie(request, response, jwtProperties.getCookieName(), token, jwtProperties.getExpire() * 60);
 
             //System.out.println(user);
-            return new ResultBean<UserInfo>(200, "认证成功！",userInfo);
-        }catch (Exception e){
+            return new ResultBean<UserInfo>(200, "认证成功！", userInfo);
+        } catch (Exception e) {
         }
-        return new ResultBean<UserInfo>(401, "身份未认证！",null);
+        return new ResultBean<UserInfo>(401, "身份未认证！", null);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param request
+     * @param response
+     * @param token
+     * @return
+     */
+    @DeleteMapping("logout")
+    public ResultBean<UserInfo> logout(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @CookieValue("HFR_TOKEN") String token) {
+
+        try {
+            CookieUtils.setCookie(request, response, jwtProperties.getCookieName(), "", 0);
+
+            return new ResultBean<UserInfo>(200, "退出成功！", null);
+        } catch (Exception e) {
+            System.out.println("出错了");
+        }
+        return new ResultBean<UserInfo>(401, "退出失败！", null);
     }
 
     /**
      * 通过cookie解析，验证考试用户是否已认证
+     *
      * @param token
      * @return
      */
@@ -130,12 +156,12 @@ public class AuthController {
     public ResultBean<UserInfo> verifyQ(
             HttpServletRequest request,
             HttpServletResponse response,
-            @CookieValue("HFR_Q_TOKEN") String token){
+            @CookieValue("HFR_Q_TOKEN") String token) {
         try {
             UserInfo userInfo = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey());
 
-            if(userInfo == null){   //token解析失败，身份未认证
-                return new ResultBean<UserInfo>(401, "身份未认证！",null);
+            if (userInfo == null) {   //token解析失败，身份未认证
+                return new ResultBean<UserInfo>(401, "身份未认证！", null);
             }
 
             //解析成功刷新jwt时效，即重新生成jwt
@@ -145,9 +171,9 @@ public class AuthController {
             CookieUtils.setCookie(request, response, "HFR_Q_TOKEN", token, jwtProperties.getExpire() * 60);
 
             //System.out.println(user);
-            return new ResultBean<UserInfo>(200, "认证成功！",userInfo);
-        }catch (Exception e){
+            return new ResultBean<UserInfo>(200, "认证成功！", userInfo);
+        } catch (Exception e) {
         }
-        return new ResultBean<UserInfo>(401, "身份未认证！",null);
+        return new ResultBean<UserInfo>(401, "身份未认证！", null);
     }
 }

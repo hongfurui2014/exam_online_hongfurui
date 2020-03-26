@@ -111,22 +111,22 @@
     </el-aside>
     <el-container>
       <el-header>
+        <span style="margin-left: 10px;">在线考试系统 - 后台管理</span>
+
         <div>
-          <img src="../assets/itpanlogo.png" style="height:45px; width:45px" alt />
-          <span style="margin-left: 10px;">在线考试系统 - 后台管理</span>
+
+          <el-tooltip effect="dark" content="项目 github 卑微求Star">
+              <img src="../assets/favicon.png" style="height:40px; width:40px;border-radius: 50%; cursor: pointer;" @click="github"/>
+          </el-tooltip>
+
+          &nbsp;&nbsp;&nbsp;
+          
+          <el-tooltip effect="light" content="退出登录">
+              <span class="user" @click="logout">您好：{{user.userRealname}}</span>
+          </el-tooltip>
+          
         </div>
 
-        <el-dropdown>
-          <span class="el-dropdown-link">
-            {{user.userRealname}}
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item divided>个人中心</el-dropdown-item>
-            <el-dropdown-item divided>修改密码</el-dropdown-item>
-            <el-dropdown-item divided>退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -161,6 +161,18 @@ export default {
           }
         })
         .catch(error => {});
+    },
+    //github
+    github(){
+      window.open('https://github.com/hongfurui2014/exam_online_hongfurui')
+    },
+    //退出登录
+    async logout(){
+      const res = await this.$http.delete('auth/auth/logout')
+      if(res.data.httpCode == 200){
+        this.$message.success("退出成功！");
+        this.$router.push("/ogin");
+      }
     }
   },
   mounted() {
@@ -170,6 +182,16 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.user{
+  color: #555;
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.user:hover{
+  cursor: pointer
+}
+
 .el-header {
   background-color: #fff;
   border-bottom: 1px solid #ddd;
@@ -177,12 +199,10 @@ export default {
 
   display: flex;
   justify-content: space-between;
-
   align-items: center;
 
-  color: #888;
+  color: #666;
   font-size: 20px;
-  font-weight: bold;
 
   box-shadow: 3px 3px 4px #ddd !important;
 
@@ -216,13 +236,5 @@ export default {
   text-align: center;
   letter-spacing: 0.2em;
   cursor: pointer;
-}
-
-.el-dropdown-link {
-  cursor: pointer;
-  color: #409eff;
-}
-.el-icon-arrow-down {
-  font-size: 12px;
 }
 </style>

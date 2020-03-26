@@ -71,9 +71,16 @@
 
     <!-- 添加功能模态框 -->
     <el-dialog title="添加角色" :visible.sync="addRoleDialogVisible" width="300px">
-      <el-form label-position="right" label-width="80px" :model="addRoleForm" size="mini">
+      <el-form
+        label-position="right"
+        label-width="80px"
+        :model="addRoleForm"
+        size="mini"
+        :rules="roleFormRule"
+        ref="addFormRef"
+      >
         <el-row>
-          <el-form-item label="角色名称">
+          <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="addRoleForm.roleName"></el-input>
           </el-form-item>
         </el-row>
@@ -86,9 +93,16 @@
     </el-dialog>
     <!-- 修改功能模态框 -->
     <el-dialog title="修改角色" :visible.sync="updateRoleDialogVisible" width="300px">
-      <el-form label-position="right" label-width="80px" :model="updateRoleForm" size="mini">
+      <el-form
+        label-position="right"
+        label-width="80px"
+        :model="updateRoleForm"
+        size="mini"
+        :rules="roleFormRule"
+        ref="updateFormRef"
+      >
         <el-row>
-          <el-form-item label="角色名称">
+          <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="updateRoleForm.roleName"></el-input>
           </el-form-item>
         </el-row>
@@ -131,6 +145,9 @@
 export default {
   data() {
     return {
+      roleFormRule: {
+        roleName: [{ required: true, message: "请输入角色名", trigger: "blur" }]
+      },
       //搜索表单
       searchroleForm: {
         roleName: ""
@@ -219,30 +236,35 @@ export default {
     },
     //添加
     addRoleYes() {
-      this.$http
-        .post("user/role/addRole", this.addRoleForm)
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 201) {
-            this.addRoleForm.roleName = "";
-            this.addRoleDialogVisible = false;
-            this.getRoles();
-            this.$notify.success({
-              title: res.message
+      this.$refs.addFormRef.validate(valid => {
+        if (valid) {
+          //校验通过
+          this.$http
+            .post("user/role/addRole", this.addRoleForm)
+            .then(response => {
+              const res = response.data;
+              if (res.httpCode === 201) {
+                this.addRoleForm.roleName = "";
+                this.addRoleDialogVisible = false;
+                this.getRoles();
+                this.$notify.success({
+                  title: res.message
+                });
+              } else if (res.httpCode === 600) {
+                this.addRoleForm.roleName = "";
+                this.$notify.error({
+                  title: res.message
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.$notify.error({
+                title: error.response.data.message
+              });
             });
-          } else if (res.httpCode === 600) {
-            this.addRoleForm.roleName = "";
-            this.$notify.error({
-              title: res.message
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
+        }
+      });
     },
     //删除
     deleteRole(roleId) {
@@ -302,28 +324,33 @@ export default {
     },
     //确认修改
     updateRoleYes() {
-      this.$http
-        .put("user/role/updateRole", this.updateRoleForm)
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 201) {
-            this.updateRoleDialogVisible = false;
-            this.getRoles();
-            this.$notify.success({
-              title: res.message
+      this.$refs.updateFormRef.validate(valid => {
+        if (valid) {
+          //校验通过
+          this.$http
+            .put("user/role/updateRole", this.updateRoleForm)
+            .then(response => {
+              const res = response.data;
+              if (res.httpCode === 201) {
+                this.updateRoleDialogVisible = false;
+                this.getRoles();
+                this.$notify.success({
+                  title: res.message
+                });
+              } else if (res.httpCode === 600) {
+                this.$notify.error({
+                  title: res.message
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.$notify.error({
+                title: error.response.data.message
+              });
             });
-          } else if (res.httpCode === 600) {
-            this.$notify.error({
-              title: res.message
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
+        }
+      });
     },
     //修改权限模态框弹出
     async updateRightsDialog(roleId) {

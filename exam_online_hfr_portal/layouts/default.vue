@@ -27,10 +27,10 @@
         >您好：{{$store.state.user.userRealname}}</el-menu-item>
       </el-menu>
     </div>
-    <div class="container">
+    <div class="container main">
       <nuxt />
     </div>
-    <div class="container footer">footer</div>
+    <!-- <div class="container footer">footer</div> -->
   </div>
 </template>
 
@@ -66,6 +66,7 @@ export default {
           }
         })
         .catch(error => {
+          console.log(this.$router.path)
           this.$router.push("/login"); //转到登录页
         });
     }
@@ -81,6 +82,12 @@ export default {
   border-bottom: 1px #ccc solid;
   box-shadow: 2px 2px 3px #ccc !important;
   background-color: #fff;
+
+  width: 100%;
+
+  // position: fixed;
+  // top: 0px;
+  // z-index: 9999;
 }
 
 .container {
@@ -91,12 +98,14 @@ export default {
 }
 
 .main {
-  height: 100%;
-  background-color: red;
+  // margin-top: 81px;
+  // min-height: 500px;
+  // background-color: green;
 }
 
 .footer {
   text-align: center;
+  // background-color: red;
 }
 
 .el-menu-item.is-disabled{
@@ -106,10 +115,4 @@ export default {
 #logo{
   cursor: pointer;
 }
-
-// .nuxt-link-exact-active,
-// .nuxt-link-active,
-// .text-none {
-//   text-decoration: none;
-// }
 </style>

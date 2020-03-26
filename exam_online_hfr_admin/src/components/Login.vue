@@ -79,14 +79,10 @@ export default {
           .then(response => {
             const res = response.data;
             if (res.httpCode === 200) {
-              this.$notify.success({
-                title: res.message
-              });
+              this.$message.success(res.message);
               this.$router.push("/"); //转到首页
             } else if (res.httpCode === 600) {
-              this.$notify.error({
-                title: res.message
-              });
+              this.$message.error(res.message);
             }
           })
           .catch(error => {

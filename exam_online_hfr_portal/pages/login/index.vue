@@ -79,9 +79,7 @@ export default {
               this.$message.success(res.message);
               this.$router.push("/"); //转到首页
             } else if (res.httpCode === 600) {
-              this.$notify.error({
-                title: res.message
-              });
+              this.$message.error(res.message);
             }
           })
           .catch(error => {

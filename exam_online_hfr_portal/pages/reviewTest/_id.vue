@@ -25,7 +25,6 @@
             
             <div style="margin-top: 10px; color: red;font-size: 14px; font-weight: bold;" v-if="topic.fkTopic.topicType == 0 && topic.userQTopicUseranswer != topic.fkTopic.topicYesanswer">我的答案：{{topic.userQTopicUseranswer}} | 正确答案： {{topic.fkTopic.topicYesanswer}}</div>
             <div style="margin-top: 10px; color: green;font-size: 14px; font-weight: bold;" v-if="topic.fkTopic.topicType == 0 && topic.userQTopicUseranswer == topic.fkTopic.topicYesanswer">我的答案：{{topic.userQTopicUseranswer}} | 正确答案： {{topic.fkTopic.topicYesanswer}}</div>
-
             <!-- 多选题 -->
             <el-checkbox-group v-model="topic.userQTopicUseranswer">
                 <div><el-checkbox label="A" v-if="topic.fkTopic.topicType == 1 && topic.userQTopicUseranswer.join(',').search('A') != -1">选项A：{{topic.fkTopic.topicSelectA}}</el-checkbox></div>
@@ -43,7 +42,6 @@
 
             <div style="margin-top: 10px; color: green;font-size: 14px; font-weight: bold;" v-if="topic.fkTopic.topicType == 1 && topic.userQTopicUseranswer == topic.fkTopic.topicYesanswer">我的答案：{{topic.userQTopicUseranswer.join(',')}} | 正确答案： {{topic.fkTopic.topicYesanswer}}</div>
             <div style="margin-top: 10px; color: red;font-size: 14px; font-weight: bold;" v-if="topic.fkTopic.topicType == 1 && topic.userQTopicUseranswer != topic.fkTopic.topicYesanswer">我的答案：{{topic.userQTopicUseranswer.join(',')}} | 正确答案： {{topic.fkTopic.topicYesanswer}}</div>
-            
             <!-- 判断题 -->
             <div><el-radio v-model="topic.userQTopicUseranswer" label="对" v-if="topic.fkTopic.topicType == 2 && topic.userQTopicUseranswer == '对'">对</el-radio></div>
             <div><el-radio disabled v-model="topic.userQTopicUseranswer" label="对" v-if="topic.fkTopic.topicType == 2 && topic.userQTopicUseranswer != '对'">对</el-radio></div>

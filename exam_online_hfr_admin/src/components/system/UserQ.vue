@@ -79,7 +79,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.page"
-        :page-sizes="[5, 10, 20, 50, 100]"
+        :page-sizes="[20, 50, 100, 150, 200]"
         :page-size="queryInfo.rows"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -184,7 +184,7 @@ export default {
       //分页查询参数
       queryInfo: {
         page: 1, //当前页数
-        rows: 5, //每页显示条数
+        rows: 20, //每页显示条数
         userQAccount: "",
         userQRealname: "",
         gradeQ: [],

@@ -1,13 +1,11 @@
-// export default ({ app }) => {
-//     app.router.afterEach((to, from) => {
-//         console.log(to.path)
-//     })
-// }
-
-
 export default ({ app }) => {
     app.router.beforeEach((to, from, next) => {
-        //console.log(to)
+
+        // const c = getCookie("HFR_Q_TOKEN");
+        // console.log(c);
+
+        // console.log(to)
+        // console.log(from)
         next()
     })
 }

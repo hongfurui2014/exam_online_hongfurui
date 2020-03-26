@@ -62,12 +62,18 @@
         background
       ></el-pagination>
     </el-card>
-
     <!-- 添加功能模态框 -->
     <el-dialog title="添加班级" :visible.sync="addGradeDialogVisible" width="300px">
-      <el-form label-position="right" label-width="80px" :model="addGradeForm" size="mini">
+      <el-form
+        label-position="right"
+        label-width="80px"
+        :model="addGradeForm"
+        size="mini"
+        :rules="gradeFormRule"
+        ref="addFormRef"
+      >
         <el-row>
-          <el-form-item label="班级名称">
+          <el-form-item label="班级名称" prop="gradeName">
             <el-input v-model="addGradeForm.gradeName"></el-input>
           </el-form-item>
         </el-row>
@@ -80,9 +86,16 @@
     </el-dialog>
     <!-- 修改功能模态框 -->
     <el-dialog title="修改班级" :visible.sync="updateGradeDialogVisible" width="300px">
-      <el-form label-position="right" label-width="80px" :model="updateGradeForm" size="mini">
+      <el-form
+        label-position="right"
+        label-width="80px"
+        :model="updateGradeForm"
+        size="mini"
+        :rules="gradeFormRule"
+        ref="updateFormRef"
+      >
         <el-row>
-          <el-form-item label="班级名称">
+          <el-form-item label="班级名称" prop="gradeName">
             <el-input v-model="updateGradeForm.gradeName"></el-input>
           </el-form-item>
         </el-row>
@@ -100,6 +113,11 @@
 export default {
   data() {
     return {
+      gradeFormRule: {
+        gradeName: [
+          { required: true, message: "请输入班级名", trigger: "blur" }
+        ]
+      },
       //搜索表单
       searchgradeForm: {
         gradeName: ""
@@ -179,30 +197,35 @@ export default {
     },
     //添加
     addGradeYes() {
-      this.$http
-        .post("school/grade/addGrade", this.addGradeForm)
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 201) {
-            this.addGradeForm.gradeName = "";
-            this.addGradeDialogVisible = false;
-            this.getGrades();
-            this.$notify.success({
-              title: res.message
+      this.$refs.addFormRef.validate(valid => {
+        if (valid) {
+          //校验通过
+          this.$http
+            .post("school/grade/addGrade", this.addGradeForm)
+            .then(response => {
+              const res = response.data;
+              if (res.httpCode === 201) {
+                this.addGradeForm.gradeName = "";
+                this.addGradeDialogVisible = false;
+                this.getGrades();
+                this.$notify.success({
+                  title: res.message
+                });
+              } else if (res.httpCode === 600) {
+                this.addGradeForm.gradeName = "";
+                this.$notify.error({
+                  title: res.message
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.$notify.error({
+                title: error.response.data.message
+              });
             });
-          } else if (res.httpCode === 600) {
-            this.addGradeForm.gradeName = "";
-            this.$notify.error({
-              title: res.message
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
+        }
+      });
     },
     //删除
     deleteGrade(gradeId) {
@@ -262,28 +285,33 @@ export default {
     },
     //确认修改
     updateGradeYes() {
-      this.$http
-        .put("school/grade/updateGrade", this.updateGradeForm)
-        .then(response => {
-          const res = response.data;
-          if (res.httpCode === 201) {
-            this.updateGradeDialogVisible = false;
-            this.getGrades();
-            this.$notify.success({
-              title: res.message
+      this.$refs.updateFormRef.validate(valid => {
+        if (valid) {
+          //校验通过
+          this.$http
+            .put("school/grade/updateGrade", this.updateGradeForm)
+            .then(response => {
+              const res = response.data;
+              if (res.httpCode === 201) {
+                this.updateGradeDialogVisible = false;
+                this.getGrades();
+                this.$notify.success({
+                  title: res.message
+                });
+              } else if (res.httpCode === 600) {
+                this.$notify.error({
+                  title: res.message
+                });
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              this.$notify.error({
+                title: error.response.data.message
+              });
             });
-          } else if (res.httpCode === 600) {
-            this.$notify.error({
-              title: res.message
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.$notify.error({
-            title: error.response.data.message
-          });
-        });
+        }
+      });
     }
   }
 };

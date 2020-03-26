@@ -1,5 +1,6 @@
 package com.itdupan.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -18,11 +19,11 @@ public class UserQ {
     @Length(min = 2, max = 7, message = "真实姓名长度在 2 到 7 个字符")
     private String userQRealname;
 
-    //@JsonIgnore
+//    @JsonIgnore
     @Length(min = 5, max = 20, message = "账户密码长度在 5 到 20 个字符")
     private String userQPassword;
 
-    //@JsonIgnore
+//    @JsonIgnore
     private String userQSalt;
 
     private Date userQAddtime;

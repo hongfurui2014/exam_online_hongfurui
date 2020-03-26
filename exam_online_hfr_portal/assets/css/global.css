@@ -1,9 +1,12 @@
 html, body{
-    height: 100%;
     margin: 0px;
     padding: 0px;
 
     background-color: #eee;
+}
+
+html{
+    height: 100%;
 }
 
 .el-table th{
@@ -20,5 +23,4 @@ html, body{
     margin-top: 20px;;
     display: flex;
     justify-content: center;
-    
 }
