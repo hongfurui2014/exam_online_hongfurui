@@ -4,6 +4,8 @@ node_modules
 target
 test
 
+dist
+
 # local env files
 .env.local
 .env.*.local

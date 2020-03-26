@@ -20,3 +20,7 @@ eureka:
       lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
 mybatis:
   type-aliases-package: com.itdupan.pojo
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰命名
+    aggressive-lazy-loading: false # 将积极加载改为消息加载即按需加载
+    lazy-loading-enabled: true # 开启懒加载

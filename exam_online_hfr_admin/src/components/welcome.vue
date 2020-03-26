@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card shadow="always" body-style="padding: 5px 20px;">
-      welcome
+      首页
     </el-card>
   </div>
 </template>
@@ -11,13 +11,12 @@
 export default {
   data() {
     return {
-      value1: ""
-    };
+
+    }
+  },
+  mounted() {
   },
   methods: {
-    clickBtn: function() {
-      console.log(this.value1);
-    }
   }
 };
 </script>

@@ -47,7 +47,12 @@
               type="text"
               size="mini"
             >删除</el-button>
-            <el-button icon="el-icon-setting" type="text" size="mini">权限查看与分配</el-button>
+            <el-button
+              icon="el-icon-setting"
+              type="text"
+              @click="updateRightsDialog(scope.row.roleId)"
+              size="mini"
+            >权限查看与分配</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -94,6 +99,31 @@
         <el-button @click="updateRoleDialogVisible = false" size="mini">取 消</el-button>
       </span>
     </el-dialog>
+
+    <!-- 修改权限模态框 -->
+    <el-dialog
+      title="权限查看与分配"
+      :visible.sync="updateRightsDialogVisible"
+      width="300px"
+      @close="updateRightsDialogclose"
+    >
+      <el-tree
+        :data="treeRightsData"
+        show-checkbox
+        node-key="rightsId"
+        :default-checked-keys="defaultCheckedKeys"
+        :props="defaultProps"
+        highlight-current
+        default-expand-all
+        ref="treeRef"
+        check-on-click-node
+      ></el-tree>
+      <!-- 确定取消按钮 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="updateRightsYes" size="mini">确 定</el-button>
+        <el-button @click="updateRightsDialogVisible = false" size="mini">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,7 +157,16 @@ export default {
       //添加模态框是否显示
       addRoleDialogVisible: false,
       //修改模态框是否显示
-      updateRoleDialogVisible: false
+      updateRoleDialogVisible: false,
+      //修改权限模态框是否显示
+      updateRightsDialogVisible: false,
+      treeRightsData: [], //权限树形控件
+      defaultProps: {
+        children: "children",
+        label: "rightsAuthname"
+      },
+      defaultCheckedKeys: [], //默认选中的节点
+      updateRightsRoleId: 0
     };
   },
   //钩子函数，已加载完成
@@ -285,6 +324,44 @@ export default {
             title: error.response.data.message
           });
         });
+    },
+    //修改权限模态框弹出
+    async updateRightsDialog(roleId) {
+      this.updateRightsRoleId = roleId;
+      this.updateRightsDialogVisible = true;
+      //查询所有菜单
+      const res = await this.$http.get("user/rights/findAll");
+      this.treeRightsData = res.data.data;
+
+      //根据角色id查询出该角色所对应的所有菜单id
+      const res2 = await this.$http.get(
+        "user/roleRights/getRightsIdsByRoleId",
+        {
+          params: {
+            fkRoleId: roleId
+          }
+        }
+      );
+      this.defaultCheckedKeys = res2.data.data;
+    },
+    //确定修改权限
+    async updateRightsYes() {
+      let param = new URLSearchParams();
+      param.append("fkRoleId", this.updateRightsRoleId);
+      param.append("rightsList", this.$refs.treeRef.getCheckedKeys());
+
+      const res = await this.$http.put("user/roleRights/updateRights", param);
+
+      if (res.data.httpCode == 201) {
+        this.$notify.success({
+          title: res.data.message
+        });
+      }
+
+      this.updateRightsDialogVisible = false;
+    },
+    updateRightsDialogclose() {
+      this.defaultCheckedKeys = [];
     }
   }
 };
