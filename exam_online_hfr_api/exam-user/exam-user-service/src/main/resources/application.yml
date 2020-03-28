@@ -24,3 +24,10 @@ mybatis:
     map-underscore-to-camel-case: true # 开启驼峰命名
     aggressive-lazy-loading: false # 将积极加载改为消息加载即按需加载
     lazy-loading-enabled: true # 开启懒加载
+itdupan:
+  jwt:
+    secret: itdupan@Login(Auth}*^31)&heiMa% # 登录校验的密钥
+    pubKeyPath: D:\\rsa.pub # 公钥地址
+    priKeyPath: D:\\rsa.pri # 私钥地址
+    expire: 30 # 过期时间,单位分钟
+    cookieName: HFR_TOKEN

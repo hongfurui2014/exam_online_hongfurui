@@ -41,6 +41,21 @@ export default {
   },
   //钩子函数，已加载完成
   mounted() {
+    this.$http
+        .get("auth/auth/verifyQ")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            this.$store.commit("setUser", res.data);
+            this.$store.commit("setIsLogin", true);
+          }else if (res.httpCode === 401) {
+            this.$router.push("/login"); //转到登录页
+            return;
+          }
+        })
+        .catch(error => {
+        });
+        
     //加载表格数据
     this.getTests();
   },

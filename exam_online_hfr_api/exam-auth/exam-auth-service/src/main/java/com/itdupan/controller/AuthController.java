@@ -87,7 +87,6 @@ public class AuthController {
 
         }
 
-
         return new ResultBean(200, "登陆成功！", userInfo);
     }
 
@@ -123,18 +122,17 @@ public class AuthController {
     }
 
     /**
-     * 退出登录
+     * 后台用户退出登录
      *
      * @param request
      * @param response
-     * @param token
+     * @param
      * @return
      */
     @DeleteMapping("logout")
     public ResultBean<UserInfo> logout(
             HttpServletRequest request,
-            HttpServletResponse response,
-            @CookieValue("HFR_TOKEN") String token) {
+            HttpServletResponse response) {
 
         try {
             CookieUtils.setCookie(request, response, jwtProperties.getCookieName(), "", 0);
@@ -175,5 +173,28 @@ public class AuthController {
         } catch (Exception e) {
         }
         return new ResultBean<UserInfo>(401, "身份未认证！", null);
+    }
+
+    /**
+     * 后台用户退出登录
+     *
+     * @param request
+     * @param response
+     * @param
+     * @return
+     */
+    @DeleteMapping("logoutQ")
+    public ResultBean<UserInfo> logoutQ(
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        try {
+            CookieUtils.setCookie(request, response, "HFR_Q_TOKEN", "", 0);
+
+            return new ResultBean<UserInfo>(200, "退出成功！", null);
+        } catch (Exception e) {
+            System.out.println("出错了");
+        }
+        return new ResultBean<UserInfo>(401, "退出失败！", null);
     }
 }

@@ -1,37 +1,47 @@
 <template>
-  <div class="login_box">
-    <!-- 登录表单区域 -->
-    <el-form
-      :model="loginForm"
-      :rules="loginFormRules"
-      label-width="0px"
-      class="login_form"
-      size="mini"
-      ref="loginFormRef"
-    >
-      <div
-        style="padding: 25px; color: #666;font-size: 18px; text-align: center;font-weight: bold;"
-      >在线考试系统登录</div>
-      <!-- 用户名 -->
-      <el-form-item prop="username">
-        <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="用户名"></el-input>
-      </el-form-item>
+  <div style="margin: 20px;">
+    <div class="login_box">
+      <!-- 登录表单区域 -->
+      <el-form
+        :model="loginForm"
+        :rules="loginFormRules"
+        label-width="0px"
+        class="login_form"
+        size="mini"
+        ref="loginFormRef"
+      >
+        <div
+          style="padding: 25px; color: #666;font-size: 18px; text-align: center;font-weight: bold;"
+        >在线考试系统登录</div>
+        <!-- 登录账户 -->
+        <el-form-item prop="username">
+          <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="登录账户"></el-input>
+        </el-form-item>
 
-      <!-- 密码 -->
-      <el-form-item prop="password">
-        <el-input
-          show-password
-          v-model="loginForm.password"
-          prefix-icon="el-icon-lock"
-          placeholder="密码"
-        ></el-input>
-      </el-form-item>
+        <!-- 密码 -->
+        <el-form-item prop="password">
+          <el-input
+            show-password
+            v-model="loginForm.password"
+            prefix-icon="el-icon-lock"
+            placeholder="密码"
+          ></el-input>
+        </el-form-item>
 
-      <!-- 按钮 -->
-      <el-form-item class="btns">
-        <el-button type="primary" @click="login" style="width: 100%;">立 即 登 录</el-button>
-      </el-form-item>
-    </el-form>
+        <!-- 按钮 -->
+        <el-form-item>
+          <el-button type="primary" @click="login" style="width: 100%;">立 即 登 录</el-button>
+        </el-form-item>
+
+        <el-form-item style="margin-top: 0px;">
+          <el-button
+            type="text"
+            style="float: right;border: solid 1px solid;margin-top: 0px;"
+            @click="toRegister"
+          >立即注册</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -58,6 +68,9 @@ export default {
     };
   },
   methods: {
+    toRegister() {
+      this.$router.push("/register");
+    },
     login() {
       this.$refs.loginFormRef.validate(valid => {
         //校验失败
@@ -97,7 +110,7 @@ export default {
 <style lang='less' scoped>
 .login_box {
   width: 270px;
-  height: 240px;
+  height: 250px;
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid #ccc;

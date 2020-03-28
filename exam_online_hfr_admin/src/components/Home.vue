@@ -97,13 +97,13 @@
         <el-submenu index="5">
           <template slot="title">
             <i class="el-icon-setting"></i>
-            <span>日志列表</span>
+            <span>操作日志</span>
           </template>
 
-          <el-menu-item index="5-1">
+          <el-menu-item index="/info/InfoList">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>操作日志</span>
+              <span>后台日志</span>
             </template>
           </el-menu-item>
         </el-submenu>
@@ -171,7 +171,7 @@ export default {
       const res = await this.$http.delete('auth/auth/logout')
       if(res.data.httpCode == 200){
         this.$message.success("退出成功！");
-        this.$router.push("/ogin");
+        this.$router.push("/login");
       }
     }
   },
