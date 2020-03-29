@@ -260,8 +260,9 @@ export default {
             .catch(error => {
               console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "抱歉，您的权限暂未开放，请联系系统管理员！"
               });
+              return;
             });
         }
       });
@@ -373,9 +374,11 @@ export default {
     },
     //确定修改权限
     async updateRightsYes() {
+
+      let keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()];
       let param = new URLSearchParams();
       param.append("fkRoleId", this.updateRightsRoleId);
-      param.append("rightsList", this.$refs.treeRef.getCheckedKeys());
+      param.append("rightsList", keys);
 
       const res = await this.$http.put("user/roleRights/updateRights", param);
 

@@ -13,6 +13,11 @@ import Test from '../components/test/Test'
 import Statistics from '../components/test/Statistics'
 import InfoList from '../components/info/InfoList'
 
+import axios from 'axios'
+axios.defaults.baseURL = "http://zuul.itdupan.com/api/"	//可以设置根路径
+// 允许携带cookie
+axios.defaults.withCredentials = true
+
 Vue.use(Router)
 
 const router = new Router({
@@ -48,15 +53,53 @@ router.beforeEach((to, from, next) => {
   // next 是一个函数，表示放行
   // next()  放行 next('/login')  强制跳转
   const token_cookie = getCookie('HFR_TOKEN');
-  if (to.path === '/login') {
-    if(token_cookie){
+  if (to.path === '/login') { //访问登录页
+    if (token_cookie) {
       return next('/admin');
-    }else{
+    } else {
       return next();
     }
+  } else {  //访问非登录页
+    if (!token_cookie) {  //没有登录，转到登录页
+      return next('/login');
+    } else {  //已登录，查询当前访问路径，该用户是否有权限访问
+      if(to.path === '/admin'){
+        return next();
+      }
+      axios.get("auth/auth/verify")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            //根据用户id去后台获取对应的角色以及对应的所有菜单权限，返回菜单列表用于界面展示菜单
+            axios.get("user/user/findRolesRightsByUserId", {
+              params: {
+                userId: res.data.userId
+              }
+            })
+              .then(response => {
+                const res2 = response.data;
+                if (res2.httpCode === 200) {
+                  const rights = res2.data;
+                  let flag = false;
+                  for (let i = 0; i < rights.length; i++) {
+                    for (let j = 0; j < rights[i].children.length; j++) {
+                      if (to.path === rights[i].children[j].rightsPath) {
+                        flag = true;
+                        return next();
+                      }
+                    }
+                  }
+                  if (!flag) {
+                    return next('/admin');
+                  }
+                }
+              })
+              .catch(error => { });
+          }
+        })
+        .catch(error => { });
+    }
   }
-  if (!token_cookie) return next('/login');
-  next();
 })
 
 function getCookie(name) {

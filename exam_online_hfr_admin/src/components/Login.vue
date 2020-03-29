@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "hulin",
-        password: "2866908123wwe"
+        username: "光影巴米扬",
+        password: "54183726978hfr"
       },
 
       //验证规则

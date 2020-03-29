@@ -6,6 +6,7 @@ import com.itdupan.service.RightsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,9 +33,9 @@ public class RightsController {
      * @param rightsId
      * @return
      */
-//    @GetMapping("findRightsById")
-//    public ResultBean<Rights> findRightsById(Long rightsId){
-//        Rights rights = rightsService.findRightsById(rightsId);
-//        return new ResultBean<Rights>(200, "查询成功", rights);
-//    }
+    @GetMapping("findRightsById")
+    public ResultBean<Rights> findRightsById(@RequestParam("rightsId") Long rightsId){
+        Rights rights = rightsService.findRightsById(rightsId);
+        return new ResultBean<Rights>(200, "查询成功", rights);
+    }
 }

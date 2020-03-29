@@ -13,100 +13,25 @@
         router
       >
         <el-menu-item index="/admin" style="border-bottom: 1px solid #555;">
-          <i class="el-icon-s-home"></i>
+          <i class="el-icon-house"></i>
           <span>后台首页</span>
         </el-menu-item>
 
-        <el-submenu index="2">
+        <el-submenu :index="right.rightsId + ''" v-for="right in rights" :key="right.rightsId">
           <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>系统管理</span>
+            <i :class="right.rightsIcon"></i>
+            <span>{{right.rightsAuthname}}</span>
           </template>
 
-          <el-menu-item index="/system/user">
+          <el-menu-item :index="r.rightsPath + ''" v-for="r in right.children" :key="r.rightsId">
             <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>后台用户</span>
+              <i :class="r.rightsIcon"></i>
+              <span>{{r.rightsAuthname}}</span>
             </template>
           </el-menu-item>
 
-          <el-menu-item index="/system/userQ">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>考试用户</span>
-            </template>
-          </el-menu-item>
-
-          <el-menu-item index="/system/role">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>角色权限</span>
-            </template>
-          </el-menu-item>
         </el-submenu>
 
-        <el-submenu index="3">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>考试管理</span>
-          </template>
-
-          <el-menu-item index="/test/topic">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>试题管理</span>
-            </template>
-          </el-menu-item>
-
-          <el-menu-item index="/test/test">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>试卷管理</span>
-            </template>
-          </el-menu-item>
-
-          <el-menu-item index="/test/statistics">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>考试统计</span>
-            </template>
-          </el-menu-item>
-        </el-submenu>
-
-        <el-submenu index="4">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>学校操作</span>
-          </template>
-
-          <el-menu-item index="/school/grade">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>班级管理</span>
-            </template>
-          </el-menu-item>
-
-          <el-menu-item index="/school/subject">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>科目管理</span>
-            </template>
-          </el-menu-item>
-        </el-submenu>
-
-        <el-submenu index="5">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>操作日志</span>
-          </template>
-
-          <el-menu-item index="/info/InfoList">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>后台日志</span>
-            </template>
-          </el-menu-item>
-        </el-submenu>
       </el-menu>
     </el-aside>
     <el-container>
@@ -114,19 +39,18 @@
         <span style="margin-left: 10px;">在线考试系统 - 后台管理</span>
 
         <div>
-
-          <el-tooltip effect="dark" content="项目 github 卑微求Star">
-              <img src="../assets/favicon.png" style="height:40px; width:40px;border-radius: 50%; cursor: pointer;" @click="github"/>
+          <el-tooltip effect="dark" content="项目Github 卑微求Star">
+            <img
+              src="../assets/favicon.png"
+              style="height:40px; width:40px;border-radius: 50%; cursor: pointer;"
+              @click="github"
+            />
           </el-tooltip>
-
-          &nbsp;&nbsp;&nbsp;
-          
+&nbsp;&nbsp;&nbsp;
           <el-tooltip effect="light" content="退出登录">
-              <span class="user" @click="logout">您好：{{user.userRealname}}</span>
+            <span class="user" @click="logout">您好：{{user.userRealname}}</span>
           </el-tooltip>
-          
         </div>
-
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -143,7 +67,8 @@ export default {
       user: {
         userId: "",
         userRealname: ""
-      }
+      },
+      rights: []
     };
   },
   methods: {
@@ -158,18 +83,33 @@ export default {
           const res = response.data;
           if (res.httpCode === 200) {
             this.user = res.data;
+
+            //根据用户id去后台获取对应的角色以及对应的所有菜单权限，返回菜单列表用于界面展示菜单
+            this.$http
+              .get("user/user/findRolesRightsByUserId", {
+                params: {
+                  userId: this.user.userId
+                }
+              })
+              .then(response => {
+                const res2 = response.data;
+                if (res2.httpCode === 200) {
+                  this.rights = res2.data;
+                }
+              })
+              .catch(error => {});
           }
         })
         .catch(error => {});
     },
     //github
-    github(){
-      window.open('https://github.com/hongfurui2014/exam_online_hongfurui')
+    github() {
+      window.open("https://github.com/hongfurui2014/exam_online_hongfurui");
     },
     //退出登录
-    async logout(){
-      const res = await this.$http.delete('auth/auth/logout')
-      if(res.data.httpCode == 200){
+    async logout() {
+      const res = await this.$http.delete("auth/auth/logout");
+      if (res.data.httpCode == 200) {
         this.$message.success("退出成功！");
         this.$router.push("/login");
       }
@@ -182,14 +122,14 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.user{
+.user {
   color: #555;
   font-size: 14px;
   font-weight: bolder;
 }
 
-.user:hover{
-  cursor: pointer
+.user:hover {
+  cursor: pointer;
 }
 
 .el-header {

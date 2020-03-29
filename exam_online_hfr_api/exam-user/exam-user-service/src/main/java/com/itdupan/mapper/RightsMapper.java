@@ -22,6 +22,6 @@ public interface RightsMapper extends Mapper<Rights> {
      * @param rightsId
      * @return
      */
-//    @Select("SELECT * FROM hfr_rights WHERE rights_id = #{rightsId}")
-//    Rights findRightsById(@Param("rightsId") Long rightsId);
+    @Select("SELECT * FROM hfr_rights WHERE rights_id = #{rightsId}")
+    Rights findRightsById(@Param("rightsId") Long rightsId);
 }

@@ -2,7 +2,11 @@ package com.itdupan.controller;
 
 import com.itdupan.bean.PageResult;
 import com.itdupan.bean.ResultBean;
+import com.itdupan.pojo.Rights;
+import com.itdupan.pojo.Role;
 import com.itdupan.pojo.User;
+import com.itdupan.service.RoleRightsService;
+import com.itdupan.service.RoleService;
 import com.itdupan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private RoleRightsService roleRightsService;
 
     /**
      * 添加
@@ -148,5 +158,18 @@ public class UserController {
             return new ResultBean<User>(600, "用户名或密码错误！", null);
         }
         return new ResultBean<User>(200, "用户获取成功！", user);
+    }
+
+    /**
+     * 根据用户id查询角色,再根据角色id查询其下的所有一级二级菜单
+     * @param userId
+     * @return
+     */
+    @GetMapping("findRolesRightsByUserId")
+    public ResultBean<List<Rights>> findRolesRightsByUserId(@RequestParam("userId") Long userId){
+        User user = userService.findUserById(userId);
+        Role role = roleService.findRoleById(user.getFkUserRoleId());
+        List<Rights> list = roleRightsService.getRightsByRoleId(role.getRoleId());
+        return new ResultBean<>(200, "查询成功", list);
     }
 }

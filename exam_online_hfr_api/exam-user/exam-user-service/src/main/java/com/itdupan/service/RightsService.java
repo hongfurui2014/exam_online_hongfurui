@@ -45,7 +45,7 @@ public class RightsService {
      * @param rightsId
      * @return
      */
-//    public Rights findRightsById(Long rightsId){
-//        return rightsMapper.findRightsById(rightsId);
-//    }
+    public Rights findRightsById(Long rightsId){
+        return rightsMapper.findRightsById(rightsId);
+    }
 }

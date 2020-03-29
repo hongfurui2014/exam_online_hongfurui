@@ -38,10 +38,19 @@
       <nuxt />
     </div>
     <div class="container footer">
-      <p>© 2020 | 开发者：洪福锐 | <a target="_blank" style="text-decoration:none;color: #666;" href="https://github.com/hongfurui2014/exam_online_hongfurui">Github</a> | <a target="_blank" style="text-decoration:none;color: #666;" href="http://hongfurui.itdupan.com/">后台入口</a></p>
       <p>
-        粤ICP备18050176号-2 |
-        <a
+        © 2020&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;开发者：洪福锐&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+          target="_blank"
+          style="text-decoration:none;color: #666;"
+          href="https://github.com/hongfurui2014/exam_online_hongfurui"
+        >项目Github</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+          target="_blank"
+          style="text-decoration:none;color: #666;"
+          href="http://hongfurui.itdupan.com/"
+        >后台入口</a>
+      </p>
+      <p>
+        粤ICP备18050176号-2&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
           target="_blank"
           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44081102000045"
           style="text-decoration:none;color: #666;"
@@ -88,7 +97,7 @@ export default {
     },
     changeFixed(clientHeight) {
       //动态修改样式
-      this.$refs.main.style.minHeight = (clientHeight - 190) + "px";
+      this.$refs.main.style.minHeight = clientHeight - 190 + "px";
     }
   },
   mounted() {
@@ -134,7 +143,7 @@ export default {
   margin: 0 auto;
 }
 
-.main{
+.main {
   // border: solid red 1px;
 }
 

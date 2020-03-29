@@ -61,6 +61,14 @@
         <el-form-item>
           <el-button type="primary" @click="addUserQYes" style="width: 100%;">立 即 注 册</el-button>
         </el-form-item>
+
+        <el-form-item style="margin-top: 0px;">
+          <el-button
+            type="text"
+            style="float: right;border: solid 1px solid;margin-top: 0px;"
+            @click="toLogin"
+          >立即登录</el-button>
+        </el-form-item>
       </el-form>
     </div>
   </div>
@@ -100,6 +108,9 @@ export default {
     };
   },
   methods: {
+    toLogin() {
+      this.$router.push("/login");
+    },
     //为添加表单添加班级列表
     getAddGrades() {
       this.$http
@@ -143,7 +154,7 @@ export default {
 <style lang='less' scoped>
 .register_box {
   width: 270px;
-  height: 315px;
+  height: 345px;
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid #ccc;

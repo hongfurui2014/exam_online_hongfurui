@@ -14,9 +14,11 @@ public class Rights{
 
     private String rightsPath;
 
-    private String rigthsIcon;
+    private String rightsIcon;
 
     private Integer rightsLevel;
+
+    private Long fkPRightsId;
 
     @Transient
     private List<Rights> children;
@@ -48,12 +50,12 @@ public class Rights{
         this.rightsPath = rightsPath;
     }
 
-    public String getRigthsIcon() {
-        return rigthsIcon;
+    public String getRightsIcon() {
+        return rightsIcon;
     }
 
-    public void setRigthsIcon(String rigthsIcon) {
-        this.rigthsIcon = rigthsIcon;
+    public void setRightsIcon(String rightsIcon) {
+        this.rightsIcon = rightsIcon;
     }
 
     public Integer getRightsLevel() {
@@ -62,6 +64,14 @@ public class Rights{
 
     public void setRightsLevel(Integer rightsLevel) {
         this.rightsLevel = rightsLevel;
+    }
+
+    public Long getFkPRightsId() {
+        return fkPRightsId;
+    }
+
+    public void setFkPRightsId(Long fkPRightsId) {
+        this.fkPRightsId = fkPRightsId;
     }
 
     public List<Rights> getChildren() {
@@ -78,8 +88,9 @@ public class Rights{
                 "rightsId=" + rightsId +
                 ", rightsAuthname='" + rightsAuthname + '\'' +
                 ", rightsPath='" + rightsPath + '\'' +
-                ", rigthsIcon='" + rigthsIcon + '\'' +
+                ", rightsIcon='" + rightsIcon + '\'' +
                 ", rightsLevel=" + rightsLevel +
+                ", fkPRightsId=" + fkPRightsId +
                 ", children=" + children +
                 '}';
     }

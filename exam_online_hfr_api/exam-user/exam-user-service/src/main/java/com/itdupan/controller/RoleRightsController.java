@@ -1,6 +1,7 @@
 package com.itdupan.controller;
 
 import com.itdupan.bean.ResultBean;
+import com.itdupan.pojo.Rights;
 import com.itdupan.service.RoleRightsService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class RoleRightsController {
     private RoleRightsService roleRightsService;
 
     /**
-     * 根据角色id查询出该角色下的所有菜单
+     * 根据角色id查询出该角色下的所有三级菜单ids供树形控件显示
      * @param fkRoleId
      * @return
      */
@@ -28,6 +29,17 @@ public class RoleRightsController {
         List<Long> list = roleRightsService.getRightsIdsByRoleId(fkRoleId);
         return new ResultBean<>(200, "查询成功！", list);
     }
+
+    /**
+     * 根据角色id查询出该角色下的所有一级和二级菜单用于首页菜单显示
+     * @param fkRoleId
+     * @return
+     */
+//    @GetMapping("getRightsByRoleId")
+//    public ResultBean<List<Rights>> getRightsByRoleId(@RequestParam("fkRoleId") Long fkRoleId){
+//        List<Rights> list = roleRightsService.getRightsByRoleId(fkRoleId);
+//        return new ResultBean<>(200, "查询成功！", list);
+//    }
 
     /**
      * 更新用户对应的权限菜单

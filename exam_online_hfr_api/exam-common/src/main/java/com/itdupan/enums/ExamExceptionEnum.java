@@ -17,6 +17,8 @@ public enum ExamExceptionEnum {
     JUDGESIMPLE_LESS(500, "组卷失败，题库中所属该科目下的判断简单类型试题数量过少！"),
     JUDGEMIDDLE_LESS(500, "组卷失败，题库中所属该科目下的判断中等类型试题数量过少！"),
     JUDGEDIFF_LESS(500, "组卷失败，题库中所属该科目下的判断高难类型试题数量过少！"),
+
+    NOT_RIGHT(500, "抱歉，您的权限暂未开放，请联系系统管理员！"),
     ;
     private Integer httpCode;
     private String message;
