@@ -1,4 +1,6 @@
-###项目简介
+##项目简介
+
+
 
 **项目Github**：<https://github.com/hongfurui2014/exam_online_hongfurui> 
 
@@ -10,14 +12,16 @@
 
 ​	主要功能有：对班级和科目的管理；对试题和试卷的管理（包含excel文件模板大批量一次性上传试题到题库，自动从题库中抽题出试卷）；用户、角色、权限三级设计实现方法级别的细粒度权限控制；aop后置通知实现整个系统重要操作日志的记录。
 
-###项目技术栈
+##项目技术栈
 
-####前端
+
+
+###前端
 
 - 前端后台管理系统由vue与elementUI搭建，路由使用vue-router，前端在线考试系统由nuxt搭建，ajax请求均使用axios。
 - vsCode工具开发
 
-####后台
+###后台
 
 - mysql数据库，mybatis(通用Mapper、PageHelper分页助手)
 
@@ -31,15 +35,17 @@
 
 - maven、idea、postman工具开发
 
-###说明
+##说明
 
-####目录说明
+
+
+###目录说明
 
 - `exam_online_hfr_admin`为前端后台管理项目，`npm install`安装依赖后`npm run dev`可运行
 - `exam_online_hfr_portal`为前端在线开心系统项目，`npm install`安装依赖后`npm run dev`可运行
 - `exam_online_hfr_api`为后端微服务项目，maven下载完依赖，修改application.yml配置文件中的数据库密码和jwt配置后即可运行
 
-####后台api接口说明
+###后台api接口说明
 
 - 接口基准地址：`http://zuul.itdupan.com/api/`
   - 示例：`http://zuul.itdupan.com/api/school/grade/findGrades`，其中api为zuul网关前缀，school为zuul转发到的微服务名称路径，/grade/findGrades为controller为controller请求访问路径。所有请求都经过zuul网关，已在网关zuulFilter中做鉴权。
@@ -99,7 +105,7 @@ DELETE 删除
 }
 ```
 
-####其它说明
+###其它说明
 
 - `资料`中的sql文件为最干净的数据库，后台登录账号和密码均为`demo_user`，`导入试题模板.xlsx`按照格式即可导入试题
 - 本机SwitchHosts配置
@@ -171,7 +177,9 @@ server {
 }
 ```
 
-###项目待改进优化的一些问题
+## 项目待改进优化的一些问题
+
+
 
 - axios下载的文件打开出错
 - 自动抽题组卷算法待优化
