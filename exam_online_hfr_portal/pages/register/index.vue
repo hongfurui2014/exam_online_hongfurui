@@ -129,7 +129,7 @@ export default {
         if (valid) {
           //校验通过
           this.$http
-            .post("user/userQ/addUserQ", this.addUserQForm)
+            .post("user/userQ/addUserQExam", this.addUserQForm)
             .then(response => {
               const res = response.data;
               if (res.httpCode === 201) {

@@ -4,9 +4,10 @@ spring:
   application:
     name: exam-user-service
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/exam_hfr?characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/exam_hfr?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: 1234
+    # password: 1234
+    password: 54183726978hfr.#
     hikari:
       max-lifetime: 28830000
       maximum-pool-size: 9
@@ -14,7 +15,7 @@ eureka:
   client:
     registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
     service-url:
-      defaultZone: http://127.0.0.1:10010/eureka
+      defaultZone: http://localhost:10010/eureka
   instance:
       lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
       lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
@@ -22,12 +23,14 @@ mybatis:
   type-aliases-package: com.itdupan.pojo
   configuration:
     map-underscore-to-camel-case: true # 开启驼峰命名
-    aggressive-lazy-loading: false # 将积极加载改为消息加载即按需加载
-    lazy-loading-enabled: true # 开启懒加载
+#    aggressive-lazy-loading: false # 将积极加载改为消息加载即按需加载
+#    lazy-loading-enabled: true # 开启懒加载
 itdupan:
   jwt:
     secret: itdupan@Login(Auth}*^31)&heiMa% # 登录校验的密钥
-    pubKeyPath: D:\\rsa.pub # 公钥地址
-    priKeyPath: D:\\rsa.pri # 私钥地址
+    # pubKeyPath: E:\\rsa.pub # 公钥地址
+    # priKeyPath: E:\\rsa.pri # 私钥地址
+    pubKeyPath: /usr/local/my_soft/jwt/rsa.pub # 公钥地址
+    priKeyPath: /usr/local/my_soft/jwt/rsa.pri # 私钥地址
     expire: 30 # 过期时间,单位分钟
     cookieName: HFR_TOKEN

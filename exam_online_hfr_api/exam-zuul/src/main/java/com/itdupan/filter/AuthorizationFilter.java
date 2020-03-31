@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Component
 @EnableConfigurationProperties({JwtProperties.class, FilterProperties.class})
-public class Forbidden extends ZuulFilter {
+public class AuthorizationFilter extends ZuulFilter {
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -83,10 +83,6 @@ public class Forbidden extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
 
         String uri = request.getRequestURI().toString();
-
-        if("user/userQ/addUserQ".equals(uri.substring(5))){ //放行注册考试用户url
-            return false;
-        }
 
         if(paths.contains(uri.substring(5))){
             return true;    //在三级菜单中的访问路径都要拦截

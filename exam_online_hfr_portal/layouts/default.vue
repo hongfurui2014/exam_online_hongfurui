@@ -11,7 +11,7 @@
           />
         </el-menu-item>
         <el-menu-item index="/">
-          <i class="el-icon-discount"></i>首页
+          <i class="el-icon-discount"></i>在线考试系统
         </el-menu-item>
         <el-menu-item index="/examCenter">
           <i class="el-icon-copy-document"></i>考试中心
@@ -39,18 +39,21 @@
     </div>
     <div class="container footer">
       <p>
-        © 2020&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;开发者：洪福锐&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+        © 2020&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;开发者：洪福锐&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a
           target="_blank"
           style="text-decoration:none;color: #666;"
           href="https://github.com/hongfurui2014/exam_online_hongfurui"
-        >项目Github</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+        >项目Github</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a
           target="_blank"
           style="text-decoration:none;color: #666;"
           href="http://hongfurui.itdupan.com/"
         >后台入口</a>
       </p>
       <p>
-        粤ICP备18050176号-2&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+        粤ICP备18050176号-2&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a
           target="_blank"
           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44081102000045"
           style="text-decoration:none;color: #666;"
@@ -68,10 +71,43 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
+
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
 axios.defaults.baseURL = "http://zuul.itdupan.com/api/"; //可以设置根路径
 
 // 允许携带cookie
 axios.defaults.withCredentials = true;
+
+//在request拦截器中展示进度条
+axios.interceptors.request.use(
+  config => {
+    if (config.url != "test/testUserQ/updateTestUserQ") {
+      NProgress.start();
+    }
+    return config;
+  },
+  error => {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  }
+);
+
+//在response拦截器中隐藏进度条
+axios.interceptors.response.use(
+  config => {
+    if (config.url != "test/testUserQ/updateTestUserQ") {
+      NProgress.done();
+    }
+    return config;
+  },
+  error => {
+    // 对请求错误做些什么
+    NProgress.done();
+    return Promise.reject(error);
+  }
+);
 
 Vue.prototype.$http = axios;
 
@@ -90,7 +126,7 @@ export default {
     async logoutQ() {
       const res = await this.$http.delete("auth/auth/logoutQ");
       if (res.data.httpCode == 200) {
-        this.$message.success("退出成功！");
+        this.$message.error("退出成功！");
         this.$store.commit("setIsLogin", false);
         this.$router.push("/login");
       }

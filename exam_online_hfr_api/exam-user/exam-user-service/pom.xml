@@ -69,5 +69,21 @@
             <artifactId>exam-auth-interface</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.itdupan.school</groupId>
+            <artifactId>exam-school-interface</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.0.6.RELEASE</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

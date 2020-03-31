@@ -44,7 +44,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.page"
-        :page-sizes="[5, 10, 20, 50, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :page-size="queryInfo.rows"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -65,7 +65,7 @@ export default {
       //分页查询参数
       queryInfo: {
         page: 1, //当前页数
-        rows: 5, //每页显示条数
+        rows: 10, //每页显示条数
         grade: [],
         fkTestGradeId: ""
       },
@@ -90,6 +90,8 @@ export default {
           }
         })
         .catch(error => {
+          this.$router.push("/login");
+          return;
         });
 
     //加载表格数据
@@ -113,7 +115,7 @@ export default {
 
       const res2 = await this.$http.get("user/userQ/findUserQById", {
         params:{
-          userQId: this.user.userId
+          userQId: res.data.data.userId
         }
       })
 
@@ -123,7 +125,7 @@ export default {
             page: this.queryInfo.page,
             rows: this.queryInfo.rows,
             fkTestGradeId: res2.data.data.fkUserQGradeId,
-            userQId: this.user.userId
+            userQId: res.data.data.userId
           }
         })
         .then(response => {

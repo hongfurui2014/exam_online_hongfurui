@@ -4,9 +4,10 @@ spring:
   application:
     name: exam-zuul
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/exam_hfr?characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/exam_hfr?useUnicode=true&characterEncoding=utf-8
       username: root
-      password: 1234
+      # password: 1234
+      password: 54183726978hfr.#
       hikari:
         max-lifetime: 28830000
         maximum-pool-size: 9
@@ -14,7 +15,7 @@ eureka:
   client:
     registry-fetch-interval-seconds: 5 #拉取服务的间隔时间5秒
     service-url:
-      defaultZone: http://127.0.0.1:10010/eureka
+      defaultZone: http://localhost:10010/eureka
   instance:
       lease-renewal-interval-in-seconds: 5 # 5秒钟发送一次心跳
       lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
@@ -26,17 +27,21 @@ zuul:
     exam-school-service: /school/**
     exam-test-service: /test/**
   add-host-header: true # 转到微服务时携带域名
-  sensitive-headers:   # 覆盖默认敏感头信息，不忽略Cookie Set-Cookie Authorization请求头信息
+  sensitive-headers: # 覆盖默认敏感头信息，不忽略Cookie Set-Cookie Authorization请求头信息
   host:
-    connect-timeout-millis: 70000 #HTTP连接超时要比Hystrix的大
-    socket-timeout-millis: 100000   #socket超时
-  ribbon:
-    ReadTimeout: 60000
-    ConnectTimeout: 60000
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 10000
 itdupan:
   jwt:
-    pubKeyPath: D:\\rsa.pub # 公钥地址
+    # pubKeyPath: E:\\rsa.pub # 公钥地址
+    pubKeyPath: /usr/local/my_soft/jwt/rsa.pub # 公钥地址
     cookieName: HFR_TOKEN
   filter:
     allowPaths:
       - /api/auth
+feign:
+  client:
+    config:
+     default:
+       readTimeout: 10000
+       connectTimeout: 10000

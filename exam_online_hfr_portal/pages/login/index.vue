@@ -50,8 +50,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "maxin",
-        password: "2866908123wwe"
+        username: "",
+        password: ""
       },
 
       //验证规则

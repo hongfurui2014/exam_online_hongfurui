@@ -5,6 +5,8 @@ import com.itdupan.pojo.UserQ;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 public interface UserQApi {
 
     /**
@@ -24,4 +26,13 @@ public interface UserQApi {
      */
     @GetMapping("userQ/findUserQById")
     public ResultBean<UserQ> findUserQById(@RequestParam("userQId") Long userQId);
+
+    /**
+     * 通过登录账户查询列表
+     *
+     * @param userQAccount
+     * @return
+     */
+    @GetMapping("userQ/findUserQsByuserQAccount")
+    public ResultBean<List<UserQ>> findUserQsByUserQName(@RequestParam("userQAccount") String userQAccount);
 }

@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "光影巴米扬",
-        password: "54183726978hfr"
+        username: "demo_user",
+        password: "demo_user"
       },
 
       //验证规则
@@ -104,14 +104,16 @@ export default {
 }
 
 .login_box {
+  z-index: 1000;
   width: 270px;
   height: 240px;
   background-color: #fff;
   border-radius: 5px;
+  border: 1px #ccc solid;
 
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 50%;
   transform: translate(-50%, -50%);
 
   .avatar_box {

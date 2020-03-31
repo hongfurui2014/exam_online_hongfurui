@@ -36,7 +36,7 @@
     </el-aside>
     <el-container>
       <el-header>
-        <span style="margin-left: 10px;">在线考试系统 - 后台管理</span>
+        <span style="margin-left: 10px;" @click="toHome" class="home">在线考试系统 - 后台管理</span>
 
         <div>
           <el-tooltip effect="dark" content="项目Github 卑微求Star">
@@ -72,6 +72,9 @@ export default {
     };
   },
   methods: {
+    toHome(){
+      window.open("http://exam.itdupan.com/");
+    },
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;
     },
@@ -110,7 +113,7 @@ export default {
     async logout() {
       const res = await this.$http.delete("auth/auth/logout");
       if (res.data.httpCode == 200) {
-        this.$message.success("退出成功！");
+        this.$message.error("退出成功！");
         this.$router.push("/login");
       }
     }
@@ -122,6 +125,9 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.home{
+  cursor: pointer;
+}
 .user {
   color: #555;
   font-size: 14px;

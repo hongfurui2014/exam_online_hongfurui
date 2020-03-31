@@ -3,6 +3,7 @@ package com.itdupan.controller;
 import com.itdupan.bean.ResultBean;
 import com.itdupan.pojo.Rights;
 import com.itdupan.service.RoleRightsService;
+import com.itdupan.service.RoleService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +18,9 @@ public class RoleRightsController {
 
     @Autowired
     private RoleRightsService roleRightsService;
+
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 根据角色id查询出该角色下的所有三级菜单ids供树形控件显示
@@ -49,6 +53,6 @@ public class RoleRightsController {
     @PutMapping("updateRights")
     public ResultBean<Void> updateRights(@RequestParam("fkRoleId") Long fkRoleId, @RequestParam("rightsList") List<Long> rightsList){
         roleRightsService.updateRights(fkRoleId, rightsList);
-        return new ResultBean<>(201, "权限修改成功！", null);
+        return new ResultBean<>(201, "角色["+roleService.findRoleById(fkRoleId).getRoleName()+"]的权限修改成功！", null);
     }
 }

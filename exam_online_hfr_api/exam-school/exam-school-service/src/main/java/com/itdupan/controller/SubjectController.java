@@ -26,10 +26,10 @@ public class SubjectController {
     public ResultBean<Void> addSubject(@RequestBody Subject subject) {
         List<Subject> list = subjectService.findSubjectsBySubjectName(subject.getSubjectName());
         if (list.size() >= 1) {
-            return new ResultBean(600, "用户已存在，不允许重复添加！", null);
+            return new ResultBean(600, "科目已存在，不允许重复添加！", null);
         }
         subjectService.addSubject(subject);
-        return new ResultBean(201, "添加成功！", null);
+        return new ResultBean(201, "科目["+subject.getSubjectName()+"]添加成功！", null);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SubjectController {
         try {
             subjectService.delSubjectById(subjectId);
             System.out.println(subjectId);
-            return new ResultBean(204, "删除成功！", null);
+            return new ResultBean(204, "id为["+subjectId+"]的科目删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultBean(600, "删除失败，该用户可能被其它因素引用到！", null);
@@ -63,7 +63,7 @@ public class SubjectController {
             return new ResultBean(600, "修改失败，用户已存在！", null);
         }
         subjectService.updateSubject(subject);
-        return new ResultBean(201, "修改成功！", null);
+        return new ResultBean(201, "id为["+subject.getSubjectId()+"]的科目修改成功！", null);
     }
 
     /**

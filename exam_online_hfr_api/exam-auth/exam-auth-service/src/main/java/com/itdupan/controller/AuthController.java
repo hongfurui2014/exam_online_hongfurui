@@ -137,11 +137,11 @@ public class AuthController {
         try {
             CookieUtils.setCookie(request, response, jwtProperties.getCookieName(), "", 0);
 
-            return new ResultBean<UserInfo>(200, "退出成功！", null);
+            return new ResultBean<UserInfo>(200, "退出登录成功！", null);
         } catch (Exception e) {
             System.out.println("出错了");
         }
-        return new ResultBean<UserInfo>(401, "退出失败！", null);
+        return new ResultBean<UserInfo>(401, "退出登录失败！", null);
     }
 
     /**

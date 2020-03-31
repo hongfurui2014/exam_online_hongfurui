@@ -29,7 +29,7 @@ public class GradeController {
             return new ResultBean(600, "班级已存在，不允许重复添加！", null);
         }
         gradeService.addGrade(grade);
-        return new ResultBean(201, "添加成功！", null);
+        return new ResultBean(201, "班级["+grade.getGradeName()+"]添加成功！", null);
     }
 
     /**
@@ -43,7 +43,7 @@ public class GradeController {
         try {
             gradeService.delGradeById(gradeId);
             System.out.println(gradeId);
-            return new ResultBean(204, "删除成功！", null);
+            return new ResultBean(204, "id为["+gradeId+"]的班级删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultBean(600, "删除失败，该班级可能被其它因素引用到！", null);
@@ -63,7 +63,7 @@ public class GradeController {
             return new ResultBean(600, "修改失败，班级已存在！", null);
         }
         gradeService.updateGrade(grade);
-        return new ResultBean(201, "修改成功！", null);
+        return new ResultBean(201, "id为["+grade.getGradeId()+"]的班级修改成功！", null);
     }
 
     /**

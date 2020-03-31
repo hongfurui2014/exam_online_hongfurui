@@ -3,8 +3,8 @@
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>操作日志</el-breadcrumb-item>
-      <el-breadcrumb-item>后台日志</el-breadcrumb-item>
+      <el-breadcrumb-item>系统日志</el-breadcrumb-item>
+      <el-breadcrumb-item>重要日志</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 卡片 -->
     <el-card body-style="padding: 5px 10px;">
@@ -33,24 +33,24 @@
       <!-- 表格 -->
       <el-table :data="tableData" stripe border class="topic">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column prop="infoUsername" label="后台操作用户" width="120px;"></el-table-column>
+        <el-table-column prop="infoUsername" label="操作用户" width="150px;"></el-table-column>
         <el-table-column label="操作时间" width="170px;">
           <template v-slot:default="scope">
             {{ scope.row.infoVisittime | dateFormat}}
           </template>
         </el-table-column>
         <el-table-column prop="infoIp" label="访问ip" width="140px;"></el-table-column>
-        <el-table-column label="描述" width="170px;">
+        <el-table-column label="访问uri" width="250px;">
             <template v-slot:default="scope">
                 <div style="text-align: left;">
-                    {{ scope.row.infoDescribe}}
+                    {{ scope.row.infoUri}}
                 </div>
             </template>
         </el-table-column>
-        <el-table-column label="访问类与方法">
+        <el-table-column label="描述">
             <template v-slot:default="scope">
                 <div style="text-align: left;">
-                    {{ scope.row.infoClassandmethod}}
+                    {{ scope.row.infoDescribe}}
                 </div>
             </template>
         </el-table-column>
@@ -152,9 +152,8 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
           this.$notify.error({
-            title: error.response.data.message
+            title: "抱歉，您暂没权限查看日志列表！"
           });
         });
     }

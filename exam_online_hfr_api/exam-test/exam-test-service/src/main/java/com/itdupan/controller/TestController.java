@@ -24,7 +24,7 @@ public class TestController {
     @PostMapping("addTest")
     public ResultBean<Void> addTest(@RequestBody Test test) {
         testService.addTest(test);
-        return new ResultBean(201, "组卷成功！", null);
+        return new ResultBean(201, "试卷["+test.getTestName()+"]抽题出卷成功！", null);
     }
 
     /**

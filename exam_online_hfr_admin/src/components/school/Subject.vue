@@ -190,9 +190,8 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
           this.$notify.error({
-            title: error.response.data.message
+            title: "pre:AuthorizationFilter" ? "抱歉，您咱没有权限查看科目列表！" : error.respon.data.message
           });
         });
     },
@@ -220,9 +219,8 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         }
@@ -258,9 +256,8 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         })
@@ -306,9 +303,8 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         }

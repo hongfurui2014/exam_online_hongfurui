@@ -54,6 +54,8 @@ export default {
           }
         })
         .catch(error => {
+          this.$router.push("/login");
+          return;
         });
         
     //加载表格数据

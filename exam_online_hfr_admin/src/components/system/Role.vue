@@ -228,9 +228,8 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
           this.$notify.error({
-            title: error.response.data.message
+            title: "pre:AuthorizationFilter" ? "抱歉，您咱没有权限查看角色列表！" : error.respon.data.message
           });
         });
     },
@@ -260,9 +259,8 @@ export default {
             .catch(error => {
               console.log(error);
               this.$notify.error({
-                title: "抱歉，您的权限暂未开放，请联系系统管理员！"
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
-              return;
             });
         }
       });
@@ -275,7 +273,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          //删除
+          //确定删除
           this.$http
             .delete("user/role/delRoleById", {
               params: {
@@ -299,7 +297,7 @@ export default {
             .catch(error => {
               console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         })
@@ -321,7 +319,9 @@ export default {
             this.updateRoleDialogVisible = true;
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          this.$notify.error({});
+        });
     },
     //确认修改
     updateRoleYes() {
@@ -345,9 +345,8 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         }
@@ -358,8 +357,22 @@ export default {
       this.updateRightsRoleId = roleId;
       this.updateRightsDialogVisible = true;
       //查询所有菜单
-      const res = await this.$http.get("user/rights/findAll");
-      this.treeRightsData = res.data.data;
+      // const res = await this.$http.get("user/rights/findAll");
+      // this.treeRightsData = res.data.data;
+
+      this.$http
+        .get("user/rights/findAll")
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 200) {
+            this.treeRightsData = res.data;
+          }
+        })
+        .catch(error => {
+          this.$notify.error({
+          title: "pre:AuthorizationFilter" ? "抱歉，您咱没有权限查看权限菜单列表！" : error.respon.data.message
+          });
+        });
 
       //根据角色id查询出该角色所对应的所有菜单id
       const res2 = await this.$http.get(
@@ -380,13 +393,21 @@ export default {
       param.append("fkRoleId", this.updateRightsRoleId);
       param.append("rightsList", keys);
 
-      const res = await this.$http.put("user/roleRights/updateRights", param);
-
-      if (res.data.httpCode == 201) {
-        this.$notify.success({
-          title: res.data.message
+      this.$http
+        .put("user/roleRights/updateRights", param)
+        .then(response => {
+          const res = response.data;
+          if (res.httpCode === 201) {
+          this.$notify.success({
+            title: res.message
+          });
+          }
+        })
+        .catch(error => {
+          this.$notify.error({
+          title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
+          });
         });
-      }
 
       this.updateRightsDialogVisible = false;
     },

@@ -18,13 +18,33 @@ public class UserQController {
     private UserQService userQService;
 
     /**
-     * 添加
+     * 后台添加考试用户
      *
      * @param
      * @return
      */
     @PostMapping("addUserQ")
     public ResultBean<Void> addUserQ(@RequestBody @Valid UserQ userQ) {
+        List<UserQ> list = userQService.findUserQsByUserQAccount(userQ.getUserQAccount());
+        if (list.size() >= 1) {
+            return new ResultBean(600, "该登录账户已存在！", null);
+        }
+        List<UserQ> list2 = userQService.findUserQsByRealname(userQ.getUserQRealname());
+        if (list2.size() >= 1) {
+            return new ResultBean(600, "该真实姓名已被使用！", null);
+        }
+        userQService.addUserQ(userQ);
+        return new ResultBean(201, "考试用户[" + userQ.getUserQRealname() + "]添加成功！", null);
+    }
+
+    /**
+     * 前台注册考试用户
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("addUserQExam")
+    public ResultBean<Void> addUserQExam(@RequestBody @Valid UserQ userQ) {
         List<UserQ> list = userQService.findUserQsByUserQAccount(userQ.getUserQAccount());
         if (list.size() >= 1) {
             return new ResultBean(600, "该登录账户已存在！", null);
@@ -46,8 +66,9 @@ public class UserQController {
     @DeleteMapping("delUserQById")
     public ResultBean<Void> delUserQById(@RequestParam("userQId") Long userQId) {
         try {
+            String realName = userQService.findUserQById(userQId).getUserQRealname();
             userQService.delUserQById(userQId);
-            return new ResultBean(204, "删除成功！", null);
+            return new ResultBean(204, "考试用户[" + realName + "]删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultBean(600, "删除失败，该用户可能被其它因素引用到！", null);
@@ -55,7 +76,7 @@ public class UserQController {
     }
 
     /**
-     * 更新
+     * 修改
      *
      * @param userQ
      * @return
@@ -63,7 +84,7 @@ public class UserQController {
     @PutMapping("updateUserQ")
     public ResultBean<Void> updateUserQ(@RequestBody UserQ userQ) {
         userQService.updateUserQ(userQ);
-        return new ResultBean(201, "修改成功！", null);
+        return new ResultBean(201, "考试用户[" + userQ.getUserQRealname() + "]修改成功！", null);
     }
 
     /**

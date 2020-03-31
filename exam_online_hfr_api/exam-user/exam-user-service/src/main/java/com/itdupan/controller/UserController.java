@@ -44,7 +44,7 @@ public class UserController {
             return new ResultBean(600, "该真实姓名已被使用！", null);
         }
         userService.addUser(user);
-        return new ResultBean(201, "添加成功！", null);
+        return new ResultBean(201, "后台用户["+ user.getUserRealname() +"]添加成功！", null);
     }
 
     /**
@@ -56,8 +56,9 @@ public class UserController {
     @DeleteMapping("delUserById")
     public ResultBean<Void> delUserById(@RequestParam("userId") Long userId) {
         try {
+            String realName = userService.findUserById(userId).getUserRealname();
             userService.delUserById(userId);
-            return new ResultBean(204, "删除成功！", null);
+            return new ResultBean(204, "后台用户["+ realName +"]删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultBean(600, "删除失败，该用户可能被其它因素引用到！", null);
@@ -73,7 +74,7 @@ public class UserController {
     @PutMapping("updateUser")
     public ResultBean<Void> updateUser(@RequestBody User user) {
         userService.updateUser(user);
-        return new ResultBean(201, "修改成功！", null);
+        return new ResultBean(201, "后台用户["+ user.getUserRealname() +"]修改成功！", null);
     }
 
     /**

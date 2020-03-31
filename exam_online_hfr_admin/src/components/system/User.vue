@@ -55,14 +55,7 @@
           <template v-slot:default="scope">{{scope.row.userAddtime | dateFormat}}</template>
         </el-table-column>
         <el-table-column label="所属角色">
-          <template v-slot:default="scope">
-            <span v-if="scope.row.fkRole.roleName == '站长（开发者）'">
-              <el-tag type="danger">{{scope.row.fkRole.roleName }}</el-tag>
-            </span>
-            <span v-else>
-              {{scope.row.fkRole.roleName }}
-            </span>
-          </template>
+          <template v-slot:default="scope">{{scope.row.fkRole.roleName }}</template>
         </el-table-column>
         <el-table-column label="操作" width="130px;">
           <template v-slot:default="scope">
@@ -340,9 +333,8 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
           this.$notify.error({
-            title: error.response.data.message
+            title: "pre:AuthorizationFilter" ? "抱歉，您咱没有权限查看后台用户列表！" : error.respon.data.message
           });
         });
     },
@@ -369,9 +361,8 @@ export default {
               }
             })
             .catch(error => {
-              console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         }
@@ -409,7 +400,7 @@ export default {
             .catch(error => {
               console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         })
@@ -460,7 +451,7 @@ export default {
             .catch(error => {
               console.log(error);
               this.$notify.error({
-                title: error.response.data.message
+                title: "pre:AuthorizationFilter" ? "抱歉，您的权限暂未开放，请联系系统管理员！" : error.respon.data.message
               });
             });
         }

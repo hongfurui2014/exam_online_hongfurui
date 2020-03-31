@@ -29,7 +29,7 @@ public class RoleController {
             return new ResultBean(600, "角色已存在，不允许重复添加！", null);
         }
         roleService.addRole(role);
-        return new ResultBean(201, "添加成功！", null);
+        return new ResultBean(201, "角色[" + role.getRoleName()+"]添加成功！", null);
     }
 
     /**
@@ -41,9 +41,10 @@ public class RoleController {
     @DeleteMapping("delRoleById")
     public ResultBean<Void> delRoleById(@RequestParam("roleId") Long roleId) {
         try {
+            String roleName = roleService.findRoleById(roleId).getRoleName();
             roleService.delRoleById(roleId);
             System.out.println(roleId);
-            return new ResultBean(204, "删除成功！", null);
+            return new ResultBean(204, "角色["+roleName+"]删除成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultBean(600, "删除失败，该角色可能被其它因素引用到！", null);
@@ -63,7 +64,7 @@ public class RoleController {
             return new ResultBean(600, "修改失败，角色已存在！", null);
         }
         roleService.updateRole(role);
-        return new ResultBean(201, "修改成功！", null);
+        return new ResultBean(201, "角色["+role.getRoleName()+"]修改成功！", null);
     }
 
     /**

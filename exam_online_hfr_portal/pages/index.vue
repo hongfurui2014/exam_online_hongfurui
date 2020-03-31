@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">首页</el-card>
+    <el-card class="box-card" style="font-size: 13px; color: #666;text-align: center;">系统若有bug以后有时间再慢慢修复优化了。奥利给！</el-card>
   </div>
 </template>
 

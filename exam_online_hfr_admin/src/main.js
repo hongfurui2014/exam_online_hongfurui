@@ -22,13 +22,24 @@ axios.defaults.withCredentials = true
 axios.interceptors.request.use(function (config) {
   NProgress.start();
   return config;
-})
+},
+  error => {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  }
+);
 
 //在response拦截器中隐藏进度条
 axios.interceptors.response.use(function (config) {
   NProgress.done();
   return config;
-})
+},
+  error => {
+    // 对请求错误做些什么
+    NProgress.done();
+    return Promise.reject(error);
+  }
+);
 
 Vue.prototype.$http = axios
 

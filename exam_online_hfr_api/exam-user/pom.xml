@@ -18,10 +18,10 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.itdupan.school</groupId>
-            <artifactId>exam-school-interface</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.itdupan.school</groupId>-->
+            <!--<artifactId>exam-school-interface</artifactId>-->
+            <!--<version>1.0.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
     </dependencies>
 </project>

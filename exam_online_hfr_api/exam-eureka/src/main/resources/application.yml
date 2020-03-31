@@ -8,7 +8,7 @@ eureka:
     register-with-eureka: false # 不把自己注册到eureka服务列表
     fetch-registry: false # 不拉取eureka服务信息
     service-url:
-      defaultZone: http://127.0.0.1:10010/eureka
+      defaultZone: http://localhost:10010/eureka
     registry-fetch-interval-seconds: 10
   server:
       enable-self-preservation: false # 关闭自我保护

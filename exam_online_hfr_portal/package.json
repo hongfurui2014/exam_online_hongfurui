@@ -15,6 +15,7 @@
     "element-ui": "^2.4.11",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
+    "nprogress": "^0.2.0",
     "nuxt": "^2.0.0",
     "vue-cookie": "^1.1.4"
   },

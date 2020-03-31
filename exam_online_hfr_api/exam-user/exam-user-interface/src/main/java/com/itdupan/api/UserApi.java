@@ -35,4 +35,13 @@ public interface UserApi {
      */
     @GetMapping("user/findUserById")
     public ResultBean<User> findUserById(@RequestParam("userId") Long userId);
+
+    /**
+     * 通过登录账户查询列表
+     *
+     * @param userAccount
+     * @return
+     */
+    @GetMapping("user/findUsersByuserAccount")
+    public ResultBean<List<User>> findUsersByUserName(@RequestParam("userAccount") String userAccount);
 }

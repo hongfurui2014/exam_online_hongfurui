@@ -1,5 +1,6 @@
 <template>
   <div style="margin: 20px;">
+    <el-backtop></el-backtop>
     <el-card class="box-card">
         <el-card class="box-card topic" v-for="(topic, index) in topics" :key="topic.topicId" >
             <div slot="header">
@@ -54,6 +55,8 @@
             
         </el-card>
     </el-card>
+
+    
   </div>
 </template>
 
@@ -84,6 +87,8 @@ export default {
           }
         })
         .catch(error => {
+          this.$router.push("/login");
+          return;
         });
         
     this.loadTopics();
