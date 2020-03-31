@@ -6,8 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/exam_hfr?useUnicode=true&characterEncoding=utf-8
     username: root
-    # password: 1234
-    password: 54183726978hfr.#
+    password: 1234
     hikari:
       max-lifetime: 28830000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
       maximum-pool-size: 9 # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
@@ -22,10 +21,10 @@ eureka:
 itdupan:
   jwt:
     secret: itdupan@Login(Auth}*^31)&heiMa% # 登录校验的密钥
-    # pubKeyPath: E:\\rsa.pub # 公钥地址
-    # priKeyPath: E:\\rsa.pri # 私钥地址
-    pubKeyPath: /usr/local/my_soft/jwt/rsa.pub # 公钥地址
-    priKeyPath: /usr/local/my_soft/jwt/rsa.pri # 私钥地址
+    pubKeyPath: E:\\rsa.pub # 公钥地址
+    priKeyPath: E:\\rsa.pri # 私钥地址
+    # pubKeyPath: /usr/local/my_soft/jwt/rsa.pub # 公钥地址
+    # priKeyPath: /usr/local/my_soft/jwt/rsa.pri # 私钥地址
     expire: 30 # 过期时间,单位分钟
     cookieName: HFR_TOKEN
 mybatis:
