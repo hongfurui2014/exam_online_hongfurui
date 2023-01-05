@@ -16,7 +16,7 @@
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "nprogress": "^0.2.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "vue-cookie": "^1.1.4"
   },
   "devDependencies": {},
